@@ -1,33 +1,19 @@
 import "./styles.css";
-import { toDo } from "./new-todo";
-import { newList } from "./new-list";
+import { newList, setDefault } from "./new-list";
+import { todoForm } from "./addTodo";
+import { domGeneration, theList } from "./dom-stuff";
 
-const testButton = document.createElement("button");
-testButton.textContent = "Test";
-document.body.appendChild(testButton);
+domGeneration();
 
-testButton.addEventListener("click", () => {
-  let newToDo = toDo(
-    "Изхвърли боклука",
-    "Утре",
-    "спешно",
-    "Много е мръсно брат, просто го направи",
-    "не е готово"
-  );
-  let newerToDo = toDo(
-    "Изхвърли боклука2",
-    "Утре2",
-    "спешно2",
-    "Много е222 мръсно брат, просто го направи",
-    "не е готов2222о"
-  );
-  let newerList = newList("домашни");
-  newerList.items[0] = newToDo;
-  newerList.items[1] = newerToDo;
-  //   console.log(newToDo);
-  console.log(newerList.items);
+document.querySelector(".toDoButton").addEventListener("click", () => {
+  const defaultList = setDefault(todoForm());
+  theList(defaultList.items);
+  // console.log(defaultList.items);
 });
 
-// create parentLists - projects / work / personal / etc.
-
+// module for adding/removing a todo to/from a list
+// module for changing todolist propertie values
+// module for deleting todos
+// module for deleting lists
+// module for DOM display
 // separate all functionality in different modules according to SOLID
