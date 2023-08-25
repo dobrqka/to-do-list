@@ -6,7 +6,10 @@ export const newList = (name, items) => {
 
 const defaultList = newList("Tasks");
 
-export const setDefault = (newItem) => {
+export const addItem = (newItem) => {
   defaultList.items[defaultList.items.length] = newItem;
   return defaultList;
 };
+
+export const allLists = [defaultList];
+// allLists[allLists.length] = ;

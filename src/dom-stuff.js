@@ -10,7 +10,7 @@ export const domGeneration = () => {
   document.body.appendChild(toDoList);
 };
 
-export const theList = (aList) => {
+export const showList = (aList) => {
   const toDoList = document.querySelector(".list");
   while (toDoList.firstChild) {
     toDoList.removeChild(toDoList.firstChild);
@@ -18,6 +18,11 @@ export const theList = (aList) => {
   aList.forEach((item) => {
     const newDom = document.createElement("div");
     newDom.textContent = item.name;
+    const delButton = document.createElement("button");
+    delButton.textContent = "X";
+    delButton.setAttribute("data-index", aList.indexOf(item));
+    delButton.classList.add("delete-todo");
+    newDom.appendChild(delButton);
     toDoList.appendChild(newDom);
   });
 };
