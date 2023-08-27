@@ -11,10 +11,18 @@ document.querySelector(".toDoButton").addEventListener("click", () => {
   showList(defaultList.items);
   todoX(defaultList.items);
   console.log(defaultList.items);
+
+  const testButton = document.createElement("button");
+  testButton.textContent = "Test";
+  testButton.addEventListener("click", () => {
+    console.log(defaultList.items[0]);
+  });
+  document.body.appendChild(testButton);
 });
 
-// module for deleting todos
+// fix errors when editing elements, bug with display attribute, and generation
+// of a large amount of new inputs
+//
 // module for creating and deleting lists
 // module for setting and changing the list of a todo
-// module for changing todolist property values
 // dom stuff - change between lists, design, etc.
