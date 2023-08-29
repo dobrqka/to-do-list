@@ -1,10 +1,19 @@
 import { editToDo } from "./edit-todo";
+import { listOfLists } from "./list-stuff";
 
 export const domGeneration = () => {
   const addTodo = document.createElement("button");
   addTodo.textContent = "+";
   addTodo.classList.add("toDoButton");
   document.body.appendChild(addTodo);
+
+  const newListButton = document.createElement("button");
+  newListButton.textContent = "New List";
+  newListButton.classList.add("new-list");
+  document.body.appendChild(newListButton);
+  const allListDivs = document.createElement("div");
+  allListDivs.classList.add("all-lists");
+  document.body.appendChild(allListDivs);
 
   const toDoList = document.createElement("div");
   toDoList.textContent = "Todos: ";
@@ -60,21 +69,46 @@ export const showList = (aList) => {
     delButton.classList.add("delete-todo");
     newDom.appendChild(delButton);
     toDoList.appendChild(newDom);
+  });
+};
 
-    // const toDoProps = document.querySelectorAll(".todo-prop");
-    // toDoProps.forEach((prop) => {
-    //   prop.addEventListener("click", () => {
-    //     const editProp = document.createElement("input");
-    //     editProp.setAttribute("type", "text");
-    //     editProp.value = prop.textContent;
-    //     prop.parentElement.replaceChild(editProp, prop);
-    //     editProp.addEventListener("blur", () => {
-    //       const newProp = document.createElement("div");
-    //       newProp.textContent = editProp.value;
-    //       editProp.parentElement.replaceChild(newProp, editProp);
-    //       console.log(item);
-    //     });
-    //   });
-    // });
+export const showAllLists = () => {
+  const allListDivs = document.querySelector(".all-lists");
+  while (allListDivs.firstChild) {
+    allListDivs.removeChild(allListDivs.firstChild);
+  }
+
+  listOfLists.forEach((list) => {
+    const listDiv = document.createElement("div");
+    const listButton = document.createElement("button");
+    listButton.textContent = list.name;
+    const deleteList = document.createElement("button");
+    deleteList.textContent = "X";
+    const renameList = document.createElement("button");
+    renameList.textContent = "Edit";
+
+    listButton.addEventListener("click", () => {
+      showList(list.items);
+      console.log(listOfLists);
+    });
+
+    deleteList.addEventListener("click", () => {
+      listOfLists.splice(listOfLists.indexOf(list), 1);
+      allListDivs.removeChild(listDiv);
+      console.log(listOfLists);
+    });
+
+    renameList.addEventListener("click", () => {
+      list.name = prompt("New name?");
+      listButton.textContent = list.name;
+      console.log(listOfLists);
+    });
+
+    listDiv.appendChild(listButton);
+    listDiv.appendChild(renameList);
+    listDiv.appendChild(deleteList);
+    listDiv.style.display = "inline";
+
+    allListDivs.appendChild(listDiv);
   });
 };

@@ -1,7 +1,7 @@
 import "./styles.css";
-import { addItem } from "./list-stuff";
+import { addItem, createList, listOfLists } from "./list-stuff";
 import { todoForm } from "./addTodo";
-import { domGeneration, showList } from "./dom-stuff";
+import { domGeneration, showList, showAllLists } from "./dom-stuff";
 import { todoX } from "./removeToDo";
 
 domGeneration();
@@ -12,17 +12,20 @@ document.querySelector(".toDoButton").addEventListener("click", () => {
   todoX(defaultList.items);
   console.log(defaultList.items);
 
-  const testButton = document.createElement("button");
-  testButton.textContent = "Test";
-  testButton.addEventListener("click", () => {
-    console.log(defaultList.items[0]);
-  });
-  document.body.appendChild(testButton);
+  // const testButton = document.createElement("button");
+  // testButton.textContent = "Test";
+  // testButton.addEventListener("click", () => {
+  //   console.log(listOfLists);
+  // });
+  // document.body.appendChild(testButton);
 });
 
-// fix errors when editing elements, bug with display attribute, and generation
-// of a large amount of new inputs
-//
-// module for creating and deleting lists
+document.querySelector(".new-list").addEventListener("click", () => {
+  const newList = createList(prompt("Name of list?"));
+  newList.addList();
+  showAllLists();
+  console.log(listOfLists);
+});
+
 // module for setting and changing the list of a todo
-// dom stuff - change between lists, design, etc.
+// dom stuff - design and details
