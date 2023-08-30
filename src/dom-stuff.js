@@ -68,6 +68,33 @@ export const showList = (aList) => {
     delButton.textContent = "X";
     delButton.setAttribute("data-index", aList.indexOf(item));
     delButton.classList.add("delete-todo");
+
+    const changeListButton = document.createElement("button");
+    changeListButton.textContent = "List";
+    changeListButton.classList.add("change-list");
+
+    changeListButton.addEventListener("click", () => {
+      item.list.items.splice(item.list.items.indexOf(item), 1);
+      listGeneration(listOfLists);
+      const selectButton = document.querySelector(".select-button");
+      const listOptionsDiv = document.querySelector(".list-options");
+      selectButton.addEventListener("click", (e) => {
+        e.preventDefault();
+        listOfLists.forEach((list) => {
+          if (
+            document.querySelector('input[type="radio"]:checked').value ==
+            list.name
+          ) {
+            item.list = list;
+            list.items[list.items.length] = item;
+            console.log(item.list);
+            listOptionsDiv.parentElement.removeChild(listOptionsDiv);
+          }
+        });
+      });
+    });
+
+    newDom.appendChild(changeListButton);
     newDom.appendChild(delButton);
     toDoList.appendChild(newDom);
   });
@@ -95,6 +122,10 @@ export const showAllLists = () => {
     });
 
     deleteList.addEventListener("click", () => {
+      while (list.items.length > 0) {
+        list.items.splice(0, 1);
+      }
+      showList(list.items);
       listOfLists.splice(listOfLists.indexOf(list), 1);
       allListDivs.removeChild(listDiv);
       console.log(listOfLists);
@@ -115,7 +146,7 @@ export const showAllLists = () => {
   });
 };
 
-export const setList = (listOfLists, newItem) => {
+export const listGeneration = (listOfLists) => {
   const listOptionsDiv = document.createElement("div");
   listOptionsDiv.classList.add("list-options");
   listOptionsDiv.style.display = "block";
@@ -140,13 +171,44 @@ export const setList = (listOfLists, newItem) => {
   selectButton.classList.add("select-button");
   selectButton.textContent = "Select";
   listOptionsDiv.appendChild(selectButton);
+};
 
+export const setList = (listOfLists, newItem) => {
+  // const listOptionsDiv = document.createElement("div");
+  // listOptionsDiv.classList.add("list-options");
+  // listOptionsDiv.style.display = "block";
+  // document.body.appendChild(listOptionsDiv);
+
+  // listOfLists.forEach((list) => {
+  //   const listRadio = document.createElement("input");
+  //   listRadio.setAttribute("type", "radio");
+  //   listRadio.setAttribute("id", list.name);
+  //   listRadio.value = list.name;
+  //   listRadio.setAttribute("name", "list-radio");
+
+  //   const listRadioLabel = document.createElement("label");
+  //   listRadioLabel.setAttribute("for", list.name);
+  //   listRadioLabel.textContent = list.name;
+
+  //   listOptionsDiv.appendChild(listRadioLabel);
+  //   listOptionsDiv.appendChild(listRadio);
+  // });
+
+  // const selectButton = document.createElement("button");
+  // selectButton.classList.add("select-button");
+  // selectButton.textContent = "Select";
+  // listOptionsDiv.appendChild(selectButton);
+  listGeneration(listOfLists);
+
+  const selectButton = document.querySelector(".select-button");
+  const listOptionsDiv = document.querySelector(".list-options");
   if (listOfLists.length == 1) {
     addItem(newItem, listOfLists[0]);
     newItem.list = listOfLists[0];
     showList(listOfLists[0].items);
     removeToDo(listOfLists[0].items);
-    listOptionsDiv.style.display = "none";
+    // listOptionsDiv.style.display = "none";
+    listOptionsDiv.parentElement.removeChild(listOptionsDiv);
   } else {
     selectButton.addEventListener("click", (e) => {
       e.preventDefault();
@@ -162,7 +224,8 @@ export const setList = (listOfLists, newItem) => {
           console.log(list.items);
         }
       });
-      listOptionsDiv.style.display = "none";
+      // listOptionsDiv.style.display = "none";
+      listOptionsDiv.parentElement.removeChild(listOptionsDiv);
       console.log(listOfLists);
     });
   }

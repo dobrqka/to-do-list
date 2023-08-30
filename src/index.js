@@ -1,7 +1,13 @@
 import "./styles.css";
 import { addItem, createList, listOfLists, addToList } from "./list-stuff";
 import { todoForm } from "./addTodo";
-import { domGeneration, showList, showAllLists, setList } from "./dom-stuff";
+import {
+  domGeneration,
+  showList,
+  showAllLists,
+  setList,
+  listGeneration,
+} from "./dom-stuff";
 import { removeToDo } from "./removeToDo";
 
 domGeneration();
