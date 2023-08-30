@@ -1,13 +1,13 @@
-const removeToDo = (list, index) => {
+const deleteToDo = (list, index) => {
   list.splice(index, 1);
 };
 
-export const todoX = (list) => {
+export const removeToDo = (list) => {
   const deleteButtons = document.querySelectorAll(".delete-todo");
   deleteButtons.forEach((button) => {
     button.addEventListener("click", (e) => {
       e.preventDefault;
-      removeToDo(list, e.target.getAttribute("data-index"));
+      deleteToDo(list, e.target.getAttribute("data-index"));
       e.target.parentElement.remove();
     });
   });

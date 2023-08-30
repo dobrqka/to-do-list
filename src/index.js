@@ -1,16 +1,14 @@
 import "./styles.css";
-import { addItem, createList, listOfLists } from "./list-stuff";
+import { addItem, createList, listOfLists, addToList } from "./list-stuff";
 import { todoForm } from "./addTodo";
-import { domGeneration, showList, showAllLists } from "./dom-stuff";
-import { todoX } from "./removeToDo";
+import { domGeneration, showList, showAllLists, setList } from "./dom-stuff";
+import { removeToDo } from "./removeToDo";
 
 domGeneration();
 
 document.querySelector(".toDoButton").addEventListener("click", () => {
-  const defaultList = addItem(todoForm());
-  showList(defaultList.items);
-  todoX(defaultList.items);
-  console.log(defaultList.items);
+  const newItem = todoForm();
+  setList(listOfLists, newItem);
 
   // const testButton = document.createElement("button");
   // testButton.textContent = "Test";
@@ -27,5 +25,5 @@ document.querySelector(".new-list").addEventListener("click", () => {
   console.log(listOfLists);
 });
 
-// module for setting and changing the list of a todo
+// module for changing the list of a todo
 // dom stuff - design and details

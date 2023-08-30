@@ -1,5 +1,6 @@
 import { editToDo } from "./edit-todo";
-import { listOfLists } from "./list-stuff";
+import { addItem, listOfLists, newList } from "./list-stuff";
+import { removeToDo } from "./removeToDo";
 
 export const domGeneration = () => {
   const addTodo = document.createElement("button");
@@ -89,6 +90,7 @@ export const showAllLists = () => {
 
     listButton.addEventListener("click", () => {
       showList(list.items);
+      removeToDo(list.items);
       console.log(listOfLists);
     });
 
@@ -111,4 +113,57 @@ export const showAllLists = () => {
 
     allListDivs.appendChild(listDiv);
   });
+};
+
+export const setList = (listOfLists, newItem) => {
+  const listOptionsDiv = document.createElement("div");
+  listOptionsDiv.classList.add("list-options");
+  listOptionsDiv.style.display = "block";
+  document.body.appendChild(listOptionsDiv);
+
+  listOfLists.forEach((list) => {
+    const listRadio = document.createElement("input");
+    listRadio.setAttribute("type", "radio");
+    listRadio.setAttribute("id", list.name);
+    listRadio.value = list.name;
+    listRadio.setAttribute("name", "list-radio");
+
+    const listRadioLabel = document.createElement("label");
+    listRadioLabel.setAttribute("for", list.name);
+    listRadioLabel.textContent = list.name;
+
+    listOptionsDiv.appendChild(listRadioLabel);
+    listOptionsDiv.appendChild(listRadio);
+  });
+
+  const selectButton = document.createElement("button");
+  selectButton.classList.add("select-button");
+  selectButton.textContent = "Select";
+  listOptionsDiv.appendChild(selectButton);
+
+  if (listOfLists.length == 1) {
+    addItem(newItem, listOfLists[0]);
+    newItem.list = listOfLists[0];
+    showList(listOfLists[0].items);
+    removeToDo(listOfLists[0].items);
+    listOptionsDiv.style.display = "none";
+  } else {
+    selectButton.addEventListener("click", (e) => {
+      e.preventDefault();
+      listOfLists.forEach((list) => {
+        if (
+          document.querySelector('input[type="radio"]:checked').value ==
+          list.name
+        ) {
+          addItem(newItem, list);
+          newItem.list = list;
+          showList(list.items);
+          removeToDo(list.items);
+          console.log(list.items);
+        }
+      });
+      listOptionsDiv.style.display = "none";
+      console.log(listOfLists);
+    });
+  }
 };

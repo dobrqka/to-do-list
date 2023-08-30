@@ -7,9 +7,14 @@ export const newList = (name) => {
 
 const defaultList = newList("Tasks");
 
-export const addItem = (newItem) => {
-  defaultList.items[defaultList.items.length] = newItem;
-  return defaultList;
+// export const addItem = (newItem) => {
+//   defaultList.items[defaultList.items.length] = newItem;
+//   return defaultList;
+// };
+
+export const addItem = (newItem, list) => {
+  list.items[list.items.length] = newItem;
+  return list;
 };
 
 // array of lists
