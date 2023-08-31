@@ -1,25 +1,35 @@
 import { editToDo } from "./edit-todo";
 import { addItem, listOfLists, newList } from "./list-stuff";
 import { removeToDo } from "./removeToDo";
+import Icon from "./list.png";
+import Chickin from "./chickin.png";
 
 export const domGeneration = () => {
+  const mainDiv = document.querySelector(".main");
   const addTodo = document.createElement("button");
   addTodo.textContent = "+";
   addTodo.classList.add("toDoButton");
-  document.body.appendChild(addTodo);
+  mainDiv.appendChild(addTodo);
 
   const newListButton = document.createElement("button");
-  newListButton.textContent = "New List";
+  // newListButton.textContent = "New List";
+  const listIcon = new Image();
+  listIcon.src = Icon;
   newListButton.classList.add("new-list");
-  document.body.appendChild(newListButton);
+  mainDiv.appendChild(newListButton);
   const allListDivs = document.createElement("div");
   allListDivs.classList.add("all-lists");
-  document.body.appendChild(allListDivs);
+  mainDiv.appendChild(allListDivs);
 
   const toDoList = document.createElement("div");
   toDoList.textContent = "Todos: ";
   toDoList.classList.add("list");
-  document.body.appendChild(toDoList);
+  mainDiv.appendChild(toDoList);
+
+  const chickinIcon = new Image();
+  chickinIcon.src = Chickin;
+  const gitHub = document.querySelector(".github");
+  gitHub.appendChild(chickinIcon);
 };
 
 export const showList = (aList) => {
@@ -148,9 +158,10 @@ export const showAllLists = () => {
 
 export const listGeneration = (listOfLists) => {
   const listOptionsDiv = document.createElement("div");
+  const mainDiv = document.querySelector(".main");
   listOptionsDiv.classList.add("list-options");
   listOptionsDiv.style.display = "block";
-  document.body.appendChild(listOptionsDiv);
+  mainDiv.appendChild(listOptionsDiv);
 
   listOfLists.forEach((list) => {
     const listRadio = document.createElement("input");

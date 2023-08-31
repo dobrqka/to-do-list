@@ -7,7 +7,9 @@ module.exports = {
   devtool: "inline-source-map",
   plugins: [
     new HtmlWebpackPlugin({
-      title: "Output Management",
+      title: "To-Do List",
+      template: "./src/index.html",
+      inject: "body",
     }),
   ],
   output: {
@@ -20,6 +22,10 @@ module.exports = {
       {
         test: /\.css$/i,
         use: ["style-loader", "css-loader"],
+      },
+      {
+        test: /\.(png|svg|jpg|jpeg|gif)$/i,
+        type: "asset/resource",
       },
     ],
   },
