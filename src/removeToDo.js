@@ -8,7 +8,7 @@ export const removeToDo = (list) => {
     button.addEventListener("click", (e) => {
       e.preventDefault;
       deleteToDo(list, e.target.getAttribute("data-index"));
-      e.target.parentElement.remove();
+      e.target.parentElement.parentElement.remove();
     });
   });
 };

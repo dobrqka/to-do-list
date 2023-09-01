@@ -1,6 +1,6 @@
 import "./styles.css";
 import { addItem, createList, listOfLists, addToList } from "./list-stuff";
-import { todoForm } from "./addTodo";
+import { todoForm, setPriority } from "./addTodo";
 import {
   domGeneration,
   showList,

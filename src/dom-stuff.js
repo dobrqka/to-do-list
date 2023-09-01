@@ -40,7 +40,7 @@ export const showList = (aList) => {
   toDoList.textContent = "Todos: ";
   aList.forEach((item) => {
     const newDom = document.createElement("div");
-    newDom.classList.add(".todos");
+    newDom.classList.add("todos");
 
     const nameDiv = document.createElement("div");
     nameDiv.textContent = item.name;
@@ -66,12 +66,36 @@ export const showList = (aList) => {
     });
     newDom.appendChild(priorityDiv);
 
+    // const notesDiv = document.createElement("div");
+    // notesDiv.textContent = item.notes;
+    // notesDiv.classList.add("notes-prop");
+    // notesDiv.addEventListener("click", () => {
+    //   editToDo(notesDiv, item);
+    // });
+    // newDom.appendChild(notesDiv);
+
     const notesDiv = document.createElement("div");
-    notesDiv.textContent = item.notes;
-    notesDiv.classList.add("notes-prop");
-    notesDiv.addEventListener("click", () => {
-      editToDo(notesDiv, item);
+    notesDiv.classList.add("notes-div");
+    const notesText = document.createElement("div");
+    notesText.textContent = item.notes;
+    notesText.classList.add("notes-text");
+    notesText.addEventListener("click", () => {
+      editToDo(notesText, item);
     });
+    notesText.style.display = "none";
+    newDom.appendChild(notesText);
+    const notesButton = document.createElement("button");
+    notesButton.classList.add("notes-button");
+    notesButton.textContent = "i";
+    notesButton.addEventListener("click", () => {
+      if (notesText.style.display == "none") {
+        notesText.style.display = "inline";
+      } else {
+        notesText.style.display = "none";
+      }
+    });
+    notesDiv.appendChild(notesButton);
+    notesDiv.appendChild(notesText);
     newDom.appendChild(notesDiv);
 
     const delButton = document.createElement("button");
@@ -104,8 +128,11 @@ export const showList = (aList) => {
       });
     });
 
-    newDom.appendChild(changeListButton);
-    newDom.appendChild(delButton);
+    const toDoCardBottom = document.createElement("div");
+    toDoCardBottom.classList.add("todo-buttons");
+    toDoCardBottom.appendChild(changeListButton);
+    toDoCardBottom.appendChild(delButton);
+    newDom.appendChild(toDoCardBottom);
     toDoList.appendChild(newDom);
   });
 };
@@ -240,4 +267,70 @@ export const setList = (listOfLists, newItem) => {
       console.log(listOfLists);
     });
   }
+};
+
+// when they click on the "+" button this modal shows up
+
+const newToDoModal = () => {
+  const mainModalDiv = document.createElement("div");
+  mainModalDiv.classList.add("main-modal");
+  const heading = document.createElement("h2");
+  mainModalDiv.appendChild(heading);
+
+  const mainContainerDiv = document.querySelector(".main");
+  mainContainerDiv.appendChild(mainModalDiv);
+};
+
+const showPriorityOptions = () => {
+  const priorityDiv = document.createElement("div");
+  priorityDiv.classList.add("priority-div");
+  const priorityLabel = document.createElement("p");
+  priorityLabel.classList.add("priority-label");
+  priorityLabel.textContent = "How important is it?";
+
+  const priorityLow = document.createElement("input");
+  priorityLow.setAttribute("type", "radio");
+  priorityLow.setAttribute("name", "priority");
+  priorityLow.setAttribute("id", "low");
+  priorityLow.setAttribute("value", "low");
+
+  const priorityLowLabel = document.createElement("label");
+  priorityLowLabel.setAttribute("for", "low");
+  priorityLowLabel.textContent = "Low";
+
+  const priorityMedium = document.createElement("input");
+  priorityMedium.setAttribute("type", "radio");
+  priorityMedium.setAttribute("name", "priority");
+  priorityMedium.setAttribute("id", "medium");
+  priorityMedium.setAttribute("value", "medium");
+
+  const priorityMediumLabel = document.createElement("label");
+  priorityMediumLabel.setAttribute("for", "medium");
+  priorityMediumLabel.textContent = "Medium";
+
+  const priorityHigh = document.createElement("input");
+  priorityHigh.setAttribute("type", "radio");
+  priorityHigh.setAttribute("name", "priority");
+  priorityHigh.setAttribute("id", "high");
+  priorityHigh.setAttribute("value", "high");
+
+  const priorityHighLabel = document.createElement("label");
+  priorityHighLabel.setAttribute("for", "high");
+  priorityHighLabel.textContent = "High";
+
+  const prioritySelect = document.createElement("button");
+  prioritySelect.classList.add("priority-select");
+  prioritySelect.textContent = "Select";
+
+  priorityDiv.appendChild(priorityLabel);
+  priorityDiv.appendChild(priorityLowLabel);
+  priorityDiv.appendChild(priorityLow);
+  priorityDiv.appendChild(priorityMediumLabel);
+  priorityDiv.appendChild(priorityMedium);
+  priorityDiv.appendChild(priorityHighLabel);
+  priorityDiv.appendChild(priorityHigh);
+  priorityDiv.appendChild(prioritySelect);
+
+  const mainContainer = document.querySelector(".main");
+  mainContainer.appendChild(priorityDiv);
 };

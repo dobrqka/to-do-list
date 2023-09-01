@@ -23,9 +23,115 @@ body {
   background-color: white;
 }
 
+.todos {
+  display: grid;
+  grid-template-columns: 7fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  background-color: rgb(252, 122, 122);
+  color: white;
+  margin: 0.5rem;
+  border-radius: 0.5rem;
+}
+
+input[type="text"] {
+  font-size: 1em;
+  background-color: rgb(252, 122, 122);
+  border: none;
+  color: white;
+  outline: none;
+  position: absolute;
+  grid-row: span 2;
+}
+
+.name-prop {
+  margin-left: 0.5rem;
+  grid-row: span 2;
+  align-self: center;
+}
+
+.date-prop {
+  font-size: 1.3rem;
+  align-self: center;
+}
+
+.priority-prop {
+  font-size: 1rem;
+  align-self: center;
+  justify-self: center;
+  background-color: rgb(255, 231, 231);
+  color: rgb(87, 87, 87);
+  padding: 0.1rem 0.25rem 0.1rem;
+  margin-top: 0.25rem;
+  border-radius: 0.5rem;
+}
+
+.notes-div {
+  position: relative;
+}
+
+.notes-button {
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 0.5rem;
+  color: rgb(87, 87, 87);
+  background-color: rgb(255, 231, 231);
+  width: 2rem;
+  font-weight: 900;
+  justify-self: end;
+}
+
+.notes-button:hover {
+  background-color: rgb(255, 221, 221);
+}
+
+.notes-button:active {
+  background-color: rgb(255, 200, 200);
+}
+
+.notes-text {
+  width: 9rem;
+  font-size: 1rem;
+  padding: 0.2rem;
+  position: absolute;
+  top: 2.2rem;
+  left: 0;
+  background-color: rgb(255, 223, 223);
+  color: rgb(39, 39, 39);
+  border: 0.01rem solid rgb(97, 97, 97);
+  border-radius: 0.5rem;
+}
+
+.toDoCardBottom {
+  align-self: center;
+  justify-self: center;
+  grid-column: span 2;
+}
+
+.change-list,
+.delete-todo {
+  margin: 0.1rem;
+  width: 2rem;
+  height: 1.2rem;
+  border: none;
+  border-radius: 0.5rem;
+  color: rgb(36, 36, 36);
+  background-color: rgb(255, 240, 240);
+}
+
+.change-list:hover,
+.delete-todo:hover {
+  background-color: rgb(255, 221, 221);
+}
+
+.change-list:active,
+.delete-todo:active {
+  background-color: rgb(255, 200, 200);
+}
+
 .list {
   font-size: 2rem;
   color: rgb(46, 46, 46);
+  margin: 0.5rem;
 }
 
 .footer {
@@ -86,7 +192,7 @@ body {
 
 h3 {
   display: grid;
-  grid-template-columns: 15fr 1fr;
+  grid-template-columns: 31fr 1fr;
 }
 
 h3 > p {
@@ -97,7 +203,7 @@ h3 > p {
 }
 
 .github {
-  justify-self: center;
+  justify-self: start;
   align-self: end;
 }
 
@@ -105,4 +211,11 @@ h3 > p {
   width: 3rem;
 }
 
-/* need to style todo cards and list menu*/
+.main-modal {
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  width: 30vw;
+}
