@@ -1,6 +1,7 @@
 import { editToDo } from "./edit-todo";
 import { addItem, listOfLists, newList } from "./list-stuff";
 import { removeToDo } from "./removeToDo";
+import { todoForm } from "./addTodo";
 import Icon from "./list.png";
 import Chickin from "./chickin.png";
 
@@ -22,7 +23,7 @@ export const domGeneration = () => {
   mainDiv.appendChild(allListDivs);
 
   const toDoList = document.createElement("div");
-  toDoList.textContent = "Todos: ";
+  // toDoList.textContent = "Todos: ";
   toDoList.classList.add("list");
   mainDiv.appendChild(toDoList);
 
@@ -53,26 +54,87 @@ export const showList = (aList) => {
     const dueDateDiv = document.createElement("div");
     dueDateDiv.textContent = item.dueDate;
     dueDateDiv.classList.add("date-prop");
-    dueDateDiv.addEventListener("click", () => {
-      editToDo(dueDateDiv, item);
+    dueDateDiv.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      const dueDatePrompt = document.createElement("div");
+      dueDatePrompt.classList.add("change-date");
+      const dueDateInput = document.createElement("input");
+      dueDateInput.setAttribute("type", "time");
+      dueDateInput.value = "09:00";
+      dueDatePrompt.appendChild(dueDateInput);
+      dueDateInput.focus();
+      const dueDateSelect = document.createElement("button");
+      dueDateSelect.textContent = "Select";
+      dueDatePrompt.appendChild(dueDateSelect);
+      dueDateDiv.parentElement.appendChild(dueDatePrompt);
+
+      dueDateSelect.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        console.log(e.target);
+        item.dueDate = dueDateInput.value; /////////// 'dueDate' for new Todo
+        dueDateDiv.textContent = item.dueDate;
+        console.log(item.dueDate);
+        dueDatePrompt.remove();
+      });
     });
     newDom.appendChild(dueDateDiv);
 
     const priorityDiv = document.createElement("div");
-    priorityDiv.textContent = item.priority;
+    if (item.priority == "Low") {
+      priorityDiv.style.color = "rgb(0, 255, 0)";
+    } else if (item.priority == "Medium") {
+      priorityDiv.style.color = "rgb(247, 244, 69)";
+    } else if (item.priority == "High") {
+      priorityDiv.style.color = "rgb(102, 0, 0)";
+    }
+    priorityDiv.textContent = "Priority: " + item.priority;
     priorityDiv.classList.add("priority-prop");
-    priorityDiv.addEventListener("click", () => {
-      editToDo(priorityDiv, item);
+    priorityDiv.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const changePriority = document.createElement("div");
+      changePriority.classList.add("change-priority");
+
+      const lowPriority = document.createElement("button");
+      lowPriority.textContent = "Low";
+      changePriority.appendChild(lowPriority);
+
+      const mediumPriority = document.createElement("button");
+      mediumPriority.textContent = "Medium";
+      changePriority.appendChild(mediumPriority);
+
+      const highPriority = document.createElement("button");
+      highPriority.textContent = "High";
+      changePriority.appendChild(highPriority);
+
+      priorityDiv.appendChild(changePriority);
+
+      lowPriority.addEventListener("click", (e) => {
+        e.stopPropagation();
+        item.priority = "Low";
+        priorityDiv.textContent = "Priority: " + item.priority;
+        priorityDiv.style.color = "rgb(0, 255, 0)";
+        changePriority.remove();
+      });
+
+      mediumPriority.addEventListener("click", (e) => {
+        e.stopPropagation();
+        item.priority = "Medium";
+        priorityDiv.textContent = "Priority: " + item.priority;
+        priorityDiv.style.color = "rgb(247, 244, 69)";
+        changePriority.remove();
+      });
+
+      highPriority.addEventListener("click", (e) => {
+        e.stopPropagation();
+        item.priority = "High";
+        priorityDiv.textContent = "Priority: " + item.priority;
+        priorityDiv.style.color = "rgb(102, 0, 0)";
+        changePriority.remove();
+      });
     });
     newDom.appendChild(priorityDiv);
-
-    // const notesDiv = document.createElement("div");
-    // notesDiv.textContent = item.notes;
-    // notesDiv.classList.add("notes-prop");
-    // notesDiv.addEventListener("click", () => {
-    //   editToDo(notesDiv, item);
-    // });
-    // newDom.appendChild(notesDiv);
 
     const notesDiv = document.createElement("div");
     notesDiv.classList.add("notes-div");
@@ -80,7 +142,23 @@ export const showList = (aList) => {
     notesText.textContent = item.notes;
     notesText.classList.add("notes-text");
     notesText.addEventListener("click", () => {
-      editToDo(notesText, item);
+      notesText.style.visibility = "hidden";
+      const editProp = document.createElement("textarea");
+      editProp.classList.add("notes-edit");
+      editProp.value = notesText.textContent;
+      notesText.parentElement.insertBefore(editProp, notesText.nextSibling);
+      editProp.focus();
+      editProp.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          notesText.textContent = editProp.value;
+          notesText.parentElement.removeChild(editProp);
+          // element.style.display = "block";
+          notesText.style.visibility = "visible";
+          item.notes = notesText.textContent;
+          notesText.textContent = item.notes;
+        }
+      });
     });
     notesText.style.display = "none";
     newDom.appendChild(notesText);
@@ -94,9 +172,6 @@ export const showList = (aList) => {
         notesText.style.display = "none";
       }
     });
-    notesDiv.appendChild(notesButton);
-    notesDiv.appendChild(notesText);
-    newDom.appendChild(notesDiv);
 
     const delButton = document.createElement("button");
     delButton.textContent = "X";
@@ -130,8 +205,11 @@ export const showList = (aList) => {
 
     const toDoCardBottom = document.createElement("div");
     toDoCardBottom.classList.add("todo-buttons");
+    toDoCardBottom.appendChild(notesButton);
+    toDoCardBottom.appendChild(notesText);
     toDoCardBottom.appendChild(changeListButton);
     toDoCardBottom.appendChild(delButton);
+    toDoCardBottom.appendChild(notesDiv);
     newDom.appendChild(toDoCardBottom);
     toDoList.appendChild(newDom);
   });
@@ -212,30 +290,6 @@ export const listGeneration = (listOfLists) => {
 };
 
 export const setList = (listOfLists, newItem) => {
-  // const listOptionsDiv = document.createElement("div");
-  // listOptionsDiv.classList.add("list-options");
-  // listOptionsDiv.style.display = "block";
-  // document.body.appendChild(listOptionsDiv);
-
-  // listOfLists.forEach((list) => {
-  //   const listRadio = document.createElement("input");
-  //   listRadio.setAttribute("type", "radio");
-  //   listRadio.setAttribute("id", list.name);
-  //   listRadio.value = list.name;
-  //   listRadio.setAttribute("name", "list-radio");
-
-  //   const listRadioLabel = document.createElement("label");
-  //   listRadioLabel.setAttribute("for", list.name);
-  //   listRadioLabel.textContent = list.name;
-
-  //   listOptionsDiv.appendChild(listRadioLabel);
-  //   listOptionsDiv.appendChild(listRadio);
-  // });
-
-  // const selectButton = document.createElement("button");
-  // selectButton.classList.add("select-button");
-  // selectButton.textContent = "Select";
-  // listOptionsDiv.appendChild(selectButton);
   listGeneration(listOfLists);
 
   const selectButton = document.querySelector(".select-button");
@@ -269,68 +323,145 @@ export const setList = (listOfLists, newItem) => {
   }
 };
 
-// when they click on the "+" button this modal shows up
-
-const newToDoModal = () => {
-  const mainModalDiv = document.createElement("div");
-  mainModalDiv.classList.add("main-modal");
-  const heading = document.createElement("h2");
-  mainModalDiv.appendChild(heading);
-
-  const mainContainerDiv = document.querySelector(".main");
-  mainContainerDiv.appendChild(mainModalDiv);
-};
-
-const showPriorityOptions = () => {
-  const priorityDiv = document.createElement("div");
-  priorityDiv.classList.add("priority-div");
-  const priorityLabel = document.createElement("p");
-  priorityLabel.classList.add("priority-label");
-  priorityLabel.textContent = "How important is it?";
-
+const priorityModal = () => {
   const priorityLow = document.createElement("input");
   priorityLow.setAttribute("type", "radio");
   priorityLow.setAttribute("name", "priority");
-  priorityLow.setAttribute("id", "low");
-  priorityLow.setAttribute("value", "low");
+  priorityLow.setAttribute("id", "Low");
+  priorityLow.setAttribute("value", "Low");
 
   const priorityLowLabel = document.createElement("label");
-  priorityLowLabel.setAttribute("for", "low");
+  priorityLowLabel.setAttribute("for", "Low");
   priorityLowLabel.textContent = "Low";
 
   const priorityMedium = document.createElement("input");
   priorityMedium.setAttribute("type", "radio");
   priorityMedium.setAttribute("name", "priority");
-  priorityMedium.setAttribute("id", "medium");
-  priorityMedium.setAttribute("value", "medium");
+  priorityMedium.setAttribute("id", "Medium");
+  priorityMedium.setAttribute("value", "Medium");
 
   const priorityMediumLabel = document.createElement("label");
-  priorityMediumLabel.setAttribute("for", "medium");
+  priorityMediumLabel.setAttribute("for", "Medium");
   priorityMediumLabel.textContent = "Medium";
 
   const priorityHigh = document.createElement("input");
   priorityHigh.setAttribute("type", "radio");
   priorityHigh.setAttribute("name", "priority");
-  priorityHigh.setAttribute("id", "high");
-  priorityHigh.setAttribute("value", "high");
+  priorityHigh.setAttribute("id", "High");
+  priorityHigh.setAttribute("value", "High");
 
   const priorityHighLabel = document.createElement("label");
-  priorityHighLabel.setAttribute("for", "high");
+  priorityHighLabel.setAttribute("for", "High");
   priorityHighLabel.textContent = "High";
 
   const prioritySelect = document.createElement("button");
   prioritySelect.classList.add("priority-select");
   prioritySelect.textContent = "Select";
 
-  priorityDiv.appendChild(priorityLabel);
-  priorityDiv.appendChild(priorityLowLabel);
-  priorityDiv.appendChild(priorityLow);
-  priorityDiv.appendChild(priorityMediumLabel);
-  priorityDiv.appendChild(priorityMedium);
-  priorityDiv.appendChild(priorityHighLabel);
-  priorityDiv.appendChild(priorityHigh);
-  priorityDiv.appendChild(prioritySelect);
+  const priorityRadios = document.createElement("div");
+  priorityRadios.classList.add("radios");
 
-  const mainContainer = document.querySelector(".main");
-  mainContainer.appendChild(priorityDiv);
+  priorityRadios.appendChild(priorityLowLabel);
+  priorityRadios.appendChild(priorityLow);
+  priorityRadios.appendChild(priorityMediumLabel);
+  priorityRadios.appendChild(priorityMedium);
+  priorityRadios.appendChild(priorityHighLabel);
+  priorityRadios.appendChild(priorityHigh);
+};
+
+// when they click on the "+" button this modal shows up
+
+export const newToDoModal = () => {
+  const mainContainerDiv = document.querySelector(".main");
+  if (document.querySelector(".main-modal")) {
+    mainContainerDiv.removeChild(mainContainerDiv.lastChild);
+  }
+
+  const mainModalDiv = document.createElement("div");
+  mainModalDiv.classList.add("main-modal");
+  const heading = document.createElement("h2");
+  mainModalDiv.appendChild(heading);
+
+  mainContainerDiv.appendChild(mainModalDiv);
+
+  heading.textContent = "What's the task?";
+  const nameInput = document.createElement("input");
+  nameInput.classList.add("name-input");
+  nameInput.setAttribute("type", "text");
+  nameInput.setAttribute("name", "name");
+  mainModalDiv.appendChild(nameInput);
+  nameInput.focus();
+  nameInput.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      const newItemName = nameInput.value; //////////// 'name' for new ToDo
+      nameInput.parentElement.removeChild(nameInput);
+
+      heading.textContent = "When should you do it?";
+      const dueDatePrompt = document.createElement("input");
+      dueDatePrompt.setAttribute("type", "time");
+      dueDatePrompt.value = "09:00";
+      mainModalDiv.appendChild(dueDatePrompt);
+      dueDatePrompt.focus();
+      const dueDateSelect = document.createElement("button");
+      dueDateSelect.textContent = "Select";
+      mainModalDiv.appendChild(dueDateSelect);
+
+      dueDateSelect.addEventListener("click", () => {
+        const dueDateValue = dueDatePrompt.value; /////////// 'dueDate' for new Todo
+        dueDatePrompt.parentElement.removeChild(dueDatePrompt);
+        dueDateSelect.parentElement.removeChild(dueDateSelect);
+
+        heading.textContent = "Do you have any notes?";
+        const notesArea = document.createElement("textarea");
+        notesArea.classList.add("notes-area");
+        const notesSelectButton = document.createElement("button");
+        notesSelectButton.textContent = "Continue";
+        mainModalDiv.appendChild(notesArea);
+        mainModalDiv.appendChild(notesSelectButton);
+        notesArea.focus();
+        notesSelectButton.addEventListener("click", () => {
+          const notesValue = notesArea.value; //////////////// 'notes' for new Todo
+          notesArea.parentElement.removeChild(notesArea);
+          notesSelectButton.parentElement.removeChild(notesSelectButton);
+
+          heading.textContent = "What's the priority?";
+
+          const setPriority = document.createElement("div");
+          setPriority.classList.add("set-priority");
+
+          const lowPriority = document.createElement("button");
+          lowPriority.textContent = "Low";
+          lowPriority.classList.add("priority-button");
+          setPriority.appendChild(lowPriority);
+
+          const mediumPriority = document.createElement("button");
+          mediumPriority.textContent = "Medium";
+          mediumPriority.classList.add("priority-button");
+          setPriority.appendChild(mediumPriority);
+
+          const highPriority = document.createElement("button");
+          highPriority.textContent = "High";
+          highPriority.classList.add("priority-button");
+          setPriority.appendChild(highPriority);
+          mainModalDiv.appendChild(setPriority);
+          const priorityButtons = document.querySelectorAll(".priority-button");
+          priorityButtons.forEach((button) => {
+            button.addEventListener("click", (e) => {
+              e.stopPropagation();
+              const priorityValue = button.textContent;
+              const newItem = todoForm(
+                newItemName,
+                dueDateValue,
+                priorityValue,
+                notesValue
+              );
+              setList(listOfLists, newItem);
+              mainModalDiv.style.display = "none";
+            });
+          });
+        });
+      });
+    }
+  });
 };

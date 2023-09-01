@@ -7,14 +7,14 @@ import {
   showAllLists,
   setList,
   listGeneration,
+  newToDoModal,
 } from "./dom-stuff";
 import { removeToDo } from "./removeToDo";
 
 domGeneration();
 
 document.querySelector(".toDoButton").addEventListener("click", () => {
-  const newItem = todoForm();
-  setList(listOfLists, newItem);
+  newToDoModal();
 
   // const testButton = document.createElement("button");
   // testButton.textContent = "Test";

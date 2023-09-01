@@ -31,16 +31,23 @@ body {
   color: white;
   margin: 0.5rem;
   border-radius: 0.5rem;
+  position: relative;
 }
 
-input[type="text"] {
+.todos input[type="text"] {
   font-size: 1em;
   background-color: rgb(252, 122, 122);
   border: none;
   color: white;
   outline: none;
   position: absolute;
+  left: 1rem;
   grid-row: span 2;
+}
+
+.main-modal input[type="time"] {
+  border-radius: 0.5rem;
+  margin-bottom: 0.2rem;
 }
 
 .name-prop {
@@ -52,44 +59,67 @@ input[type="text"] {
 .date-prop {
   font-size: 1.3rem;
   align-self: center;
+  position: relative;
 }
 
 .priority-prop {
   font-size: 1rem;
   align-self: center;
-  justify-self: center;
-  background-color: rgb(255, 231, 231);
-  color: rgb(87, 87, 87);
+  justify-self: start;
+  background-color: rgb(255, 74, 74);
   padding: 0.1rem 0.25rem 0.1rem;
   margin-top: 0.25rem;
+  margin-right: 0.25rem;
   border-radius: 0.5rem;
 }
-
+/* 
 .notes-div {
+  position: relative;
+} */
+
+.todo-buttons {
+  align-self: center;
+  justify-self: end;
+  grid-column: span 2;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
   position: relative;
 }
 
+.change-list,
+.delete-todo,
 .notes-button {
-  font-size: 1.2rem;
+  margin: 0.1rem;
+  width: 2rem;
+  height: 1.2rem;
   border: none;
   border-radius: 0.5rem;
-  color: rgb(87, 87, 87);
-  background-color: rgb(255, 231, 231);
-  width: 2rem;
-  font-weight: 900;
-  justify-self: end;
+  color: white;
+  background-color: rgb(255, 74, 74);
+  z-index: 2;
 }
 
+.change-list:hover,
+.delete-todo:hover,
 .notes-button:hover {
   background-color: rgb(255, 221, 221);
 }
 
+.change-list:active,
+.delete-todo:active,
 .notes-button:active {
   background-color: rgb(255, 200, 200);
 }
 
-.notes-text {
-  width: 9rem;
+.notes-button {
+  font-size: 1.2rem;
+  justify-self: end;
+}
+
+.notes-text,
+.notes-edit {
+  width: 7rem;
+  height: 3rem;
   font-size: 1rem;
   padding: 0.2rem;
   position: absolute;
@@ -99,33 +129,7 @@ input[type="text"] {
   color: rgb(39, 39, 39);
   border: 0.01rem solid rgb(97, 97, 97);
   border-radius: 0.5rem;
-}
-
-.toDoCardBottom {
-  align-self: center;
-  justify-self: center;
-  grid-column: span 2;
-}
-
-.change-list,
-.delete-todo {
-  margin: 0.1rem;
-  width: 2rem;
-  height: 1.2rem;
-  border: none;
-  border-radius: 0.5rem;
-  color: rgb(36, 36, 36);
-  background-color: rgb(255, 240, 240);
-}
-
-.change-list:hover,
-.delete-todo:hover {
-  background-color: rgb(255, 221, 221);
-}
-
-.change-list:active,
-.delete-todo:active {
-  background-color: rgb(255, 200, 200);
+  overflow: scroll;
 }
 
 .list {
@@ -213,9 +217,141 @@ h3 > p {
 
 .main-modal {
   position: absolute;
+  top: 10rem;
   left: 0;
   right: 0;
   margin-left: auto;
   margin-right: auto;
-  width: 30vw;
+  width: 40vw;
+  height: 10vh;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 1fr;
+  padding: 1rem;
+  background-color: rgb(255, 223, 223);
+  color: rgb(39, 39, 39);
+  border: 0.01rem solid rgb(97, 97, 97);
+  border-radius: 0.5rem;
+}
+
+.main-modal button {
+  border: none;
+  background-color: rgb(255, 74, 74);
+  color: white;
+  font-weight: 500;
+  font-size: 1rem;
+  border-radius: 0.5rem;
+  padding: 0.2rem;
+}
+
+.main-modal button:hover {
+  background-color: rgb(255, 0, 0);
+}
+
+.main-modal button:active {
+  background-color: rgb(255, 110, 110);
+}
+
+.main-modal textarea {
+  padding: 0.2rem;
+  border-radius: 0.5rem;
+}
+
+.main-modal textarea:focus {
+  outline: 1px solid rgb(39, 39, 39);
+}
+
+.main-modal > h2 {
+  justify-self: center;
+  font-weight: 500;
+  color: rgb(37, 37, 37);
+}
+
+.name-input {
+  font-size: 1rem;
+  align-self: center;
+  border-radius: 0.2rem;
+  background-color: white;
+  color: rgb(51, 51, 51);
+}
+
+.notes-area {
+  margin-bottom: 0.3rem;
+  font-size: 0.7rem;
+}
+
+.radios {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  margin-bottom: 0.2rem;
+}
+
+.radios > input {
+  justify-self: start;
+}
+
+.change-priority {
+  position: absolute;
+  top: 2rem;
+  right: 0.6rem;
+  display: grid;
+  grid-template-rows: 1fr;
+  gap: 0.2rem;
+  background-color: rgb(255, 223, 223);
+  color: rgb(39, 39, 39);
+  border: 0.01rem solid rgb(97, 97, 97);
+  border-radius: 0.5rem;
+  padding: 0.2rem;
+  z-index: 3;
+}
+
+.change-priority button {
+  border: none;
+  border-radius: 1rem;
+  background-color: white;
+}
+
+.set-priority {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0.2rem;
+}
+
+.set-priority button {
+  align-self: center;
+  justify-self: stretch;
+  background-color: rgb(255, 74, 74);
+  color: white;
+  padding: 0.25rem;
+  border-radius: 0.5rem;
+}
+
+.change-date {
+  position: absolute;
+  top: 2rem;
+  right: 3rem;
+  display: grid;
+  z-index: 3;
+  background-color: rgb(255, 223, 223);
+  border: 0.01rem solid rgb(97, 97, 97);
+  border-radius: 0.5rem;
+  width: 7rem;
+}
+
+.change-date input {
+  justify-self: center;
+  background-color: rgb(255, 223, 223);
+  border: none;
+}
+
+.change-date button {
+  background-color: rgb(255, 74, 74);
+  color: white;
+  padding: 0.25rem;
+  border-radius: 0.5rem;
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
+  border: none;
+  justify-self: stretch;
+  margin-top: 0.2rem;
 }
