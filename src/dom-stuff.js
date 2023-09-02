@@ -1,9 +1,10 @@
 import { editToDo } from "./edit-todo";
-import { addItem, listOfLists, newList } from "./list-stuff";
+import { addItem, listOfLists, createList } from "./list-stuff";
 import { removeToDo } from "./removeToDo";
 import { todoForm } from "./addTodo";
 import Icon from "./list.png";
 import Chickin from "./chickin.png";
+import ClockIconBro from "./clock.png";
 
 export const domGeneration = () => {
   const mainDiv = document.querySelector(".main");
@@ -52,8 +53,13 @@ export const showList = (aList) => {
     newDom.appendChild(nameDiv);
 
     const dueDateDiv = document.createElement("div");
-    dueDateDiv.textContent = item.dueDate;
+    // const clockIcon = document.createElement("img");
+    // clockIcon.classList.add("clock-icon");
+    // clockIcon.src = ClockIconBro;
+    // newDom.appendChild(clockIcon);
+    dueDateDiv.textContent = item.dueDate + "h";
     dueDateDiv.classList.add("date-prop");
+
     dueDateDiv.addEventListener("click", (e) => {
       e.preventDefault();
       e.stopImmediatePropagation();
@@ -74,7 +80,7 @@ export const showList = (aList) => {
         e.stopImmediatePropagation();
         console.log(e.target);
         item.dueDate = dueDateInput.value; /////////// 'dueDate' for new Todo
-        dueDateDiv.textContent = item.dueDate;
+        dueDateDiv.textContent = item.dueDate + "h";
         console.log(item.dueDate);
         dueDatePrompt.remove();
       });
@@ -83,11 +89,11 @@ export const showList = (aList) => {
 
     const priorityDiv = document.createElement("div");
     if (item.priority == "Low") {
-      priorityDiv.style.color = "rgb(0, 255, 0)";
-    } else if (item.priority == "Medium") {
-      priorityDiv.style.color = "rgb(247, 244, 69)";
+      priorityDiv.style.backgroundColor = "lime";
+    } else if (item.priority == "Mid") {
+      priorityDiv.style.backgroundColor = "yellow";
     } else if (item.priority == "High") {
-      priorityDiv.style.color = "rgb(102, 0, 0)";
+      priorityDiv.style.backgroundColor = "red";
     }
     priorityDiv.textContent = "Priority: " + item.priority;
     priorityDiv.classList.add("priority-prop");
@@ -101,7 +107,7 @@ export const showList = (aList) => {
       changePriority.appendChild(lowPriority);
 
       const mediumPriority = document.createElement("button");
-      mediumPriority.textContent = "Medium";
+      mediumPriority.textContent = "Mid";
       changePriority.appendChild(mediumPriority);
 
       const highPriority = document.createElement("button");
@@ -114,15 +120,15 @@ export const showList = (aList) => {
         e.stopPropagation();
         item.priority = "Low";
         priorityDiv.textContent = "Priority: " + item.priority;
-        priorityDiv.style.color = "rgb(0, 255, 0)";
+        priorityDiv.style.backgroundColor = "lime";
         changePriority.remove();
       });
 
       mediumPriority.addEventListener("click", (e) => {
         e.stopPropagation();
-        item.priority = "Medium";
+        item.priority = "Mid";
         priorityDiv.textContent = "Priority: " + item.priority;
-        priorityDiv.style.color = "rgb(247, 244, 69)";
+        priorityDiv.style.backgroundColor = "yellow";
         changePriority.remove();
       });
 
@@ -130,7 +136,7 @@ export const showList = (aList) => {
         e.stopPropagation();
         item.priority = "High";
         priorityDiv.textContent = "Priority: " + item.priority;
-        priorityDiv.style.color = "rgb(102, 0, 0)";
+        priorityDiv.style.backgroundColor = "red";
         changePriority.remove();
       });
     });
@@ -183,24 +189,28 @@ export const showList = (aList) => {
     changeListButton.classList.add("change-list");
 
     changeListButton.addEventListener("click", () => {
-      item.list.items.splice(item.list.items.indexOf(item), 1);
-      listGeneration(listOfLists);
-      const selectButton = document.querySelector(".select-button");
-      const listOptionsDiv = document.querySelector(".list-options");
-      selectButton.addEventListener("click", (e) => {
-        e.preventDefault();
-        listOfLists.forEach((list) => {
-          if (
-            document.querySelector('input[type="radio"]:checked').value ==
-            list.name
-          ) {
-            item.list = list;
-            list.items[list.items.length] = item;
-            console.log(item.list);
-            listOptionsDiv.parentElement.removeChild(listOptionsDiv);
-          }
+      if (document.querySelector(".list-options")) {
+        document.querySelector(".list-options").remove();
+      } else {
+        item.list.items.splice(item.list.items.indexOf(item), 1);
+        listGeneration(listOfLists);
+        const listOptionsDiv = document.querySelector(".list-options");
+        const listButtons = document.querySelectorAll(".list-options button");
+        listButtons.forEach((button) => {
+          button.addEventListener("click", (e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            listOfLists.forEach((list) => {
+              if (button.textContent == list.name) {
+                item.list = list;
+                list.items[list.items.length] = item;
+                console.log(item.list);
+                listOptionsDiv.parentElement.removeChild(listOptionsDiv);
+              }
+            });
+          });
         });
-      });
+      }
     });
 
     const toDoCardBottom = document.createElement("div");
@@ -220,20 +230,26 @@ export const showAllLists = () => {
   while (allListDivs.firstChild) {
     allListDivs.removeChild(allListDivs.firstChild);
   }
-
+  const allListsHeading = document.createElement("h2");
+  allListsHeading.textContent = "Lists: ";
+  allListDivs.appendChild(allListsHeading);
+  allListDivs.appendChild(allListsHeading);
   listOfLists.forEach((list) => {
     const listDiv = document.createElement("div");
+    listDiv.classList.add("list-div");
     const listButton = document.createElement("button");
+    listButton.classList.add("list-name");
     listButton.textContent = list.name;
     const deleteList = document.createElement("button");
-    deleteList.textContent = "X";
+    deleteList.classList.add("delete-list");
+    deleteList.textContent = "x";
     const renameList = document.createElement("button");
+    renameList.classList.add("edit-list");
     renameList.textContent = "Edit";
 
     listButton.addEventListener("click", () => {
       showList(list.items);
       removeToDo(list.items);
-      console.log(listOfLists);
     });
 
     deleteList.addEventListener("click", () => {
@@ -247,15 +263,33 @@ export const showAllLists = () => {
     });
 
     renameList.addEventListener("click", () => {
-      list.name = prompt("New name?");
+      listButton.style.visibility = "hidden";
+
+      const editProp = document.createElement("input");
+      editProp.setAttribute("type", "text");
+      editProp.value = listButton.textContent;
+      listButton.parentElement.insertBefore(editProp, listButton.nextSibling);
+      editProp.style.alignSelf = "center";
+      // editProp.style.display = "block";
+      editProp.focus();
+      editProp.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          listButton.textContent = editProp.value;
+          listButton.parentElement.removeChild(editProp);
+          listButton.style.visibility = "visible";
+          list.name = listButton.textContent;
+          console.log(list);
+        }
+      });
       listButton.textContent = list.name;
       console.log(listOfLists);
     });
 
     listDiv.appendChild(listButton);
-    listDiv.appendChild(renameList);
     listDiv.appendChild(deleteList);
-    listDiv.style.display = "inline";
+    listDiv.appendChild(renameList);
+    listDiv.style.display = "grid";
 
     allListDivs.appendChild(listDiv);
   });
@@ -265,35 +299,43 @@ export const listGeneration = (listOfLists) => {
   const listOptionsDiv = document.createElement("div");
   const mainDiv = document.querySelector(".main");
   listOptionsDiv.classList.add("list-options");
-  listOptionsDiv.style.display = "block";
+  listOptionsDiv.style.display = "grid";
   mainDiv.appendChild(listOptionsDiv);
 
   listOfLists.forEach((list) => {
-    const listRadio = document.createElement("input");
-    listRadio.setAttribute("type", "radio");
-    listRadio.setAttribute("id", list.name);
-    listRadio.value = list.name;
-    listRadio.setAttribute("name", "list-radio");
+    const listButton = document.createElement("button");
+    listButton.textContent = list.name;
 
-    const listRadioLabel = document.createElement("label");
-    listRadioLabel.setAttribute("for", list.name);
-    listRadioLabel.textContent = list.name;
-
-    listOptionsDiv.appendChild(listRadioLabel);
-    listOptionsDiv.appendChild(listRadio);
+    listOptionsDiv.appendChild(listButton);
   });
 
-  const selectButton = document.createElement("button");
-  selectButton.classList.add("select-button");
-  selectButton.textContent = "Select";
-  listOptionsDiv.appendChild(selectButton);
+  // listOfLists.forEach((list) => {
+  //   const listRadio = document.createElement("input");
+  //   listRadio.setAttribute("type", "radio");
+  //   listRadio.setAttribute("id", list.name);
+  //   listRadio.value = list.name;
+  //   listRadio.setAttribute("name", "list-radio");
+
+  //   const listRadioLabel = document.createElement("label");
+  //   listRadioLabel.setAttribute("for", list.name);
+  //   listRadioLabel.textContent = list.name;
+
+  //   listOptionsDiv.appendChild(listRadioLabel);
+  //   listOptionsDiv.appendChild(listRadio);
+  // });
+
+  // const selectButton = document.createElement("button");
+  // selectButton.classList.add("select-button");
+  // selectButton.textContent = "Select";
+  // listOptionsDiv.appendChild(selectButton);
 };
 
 export const setList = (listOfLists, newItem) => {
   listGeneration(listOfLists);
 
-  const selectButton = document.querySelector(".select-button");
+  // const selectButton = document.querySelector(".select-button");
   const listOptionsDiv = document.querySelector(".list-options");
+  const listButtons = document.querySelectorAll(".list-options button");
   if (listOfLists.length == 1) {
     addItem(newItem, listOfLists[0]);
     newItem.list = listOfLists[0];
@@ -302,23 +344,23 @@ export const setList = (listOfLists, newItem) => {
     // listOptionsDiv.style.display = "none";
     listOptionsDiv.parentElement.removeChild(listOptionsDiv);
   } else {
-    selectButton.addEventListener("click", (e) => {
-      e.preventDefault();
-      listOfLists.forEach((list) => {
-        if (
-          document.querySelector('input[type="radio"]:checked').value ==
-          list.name
-        ) {
-          addItem(newItem, list);
-          newItem.list = list;
-          showList(list.items);
-          removeToDo(list.items);
-          console.log(list.items);
-        }
+    listButtons.forEach((button) => {
+      button.addEventListener("click", (e) => {
+        e.stopPropagation();
+        e.preventDefault();
+        listOfLists.forEach((list) => {
+          if (button.textContent == list.name) {
+            addItem(newItem, list);
+            newItem.list = list;
+            showList(list.items);
+            removeToDo(list.items);
+            console.log(list.items);
+          }
+        });
+        // listOptionsDiv.style.display = "none";
+        listOptionsDiv.parentElement.removeChild(listOptionsDiv);
+        console.log(listOfLists);
       });
-      // listOptionsDiv.style.display = "none";
-      listOptionsDiv.parentElement.removeChild(listOptionsDiv);
-      console.log(listOfLists);
     });
   }
 };
@@ -337,12 +379,12 @@ const priorityModal = () => {
   const priorityMedium = document.createElement("input");
   priorityMedium.setAttribute("type", "radio");
   priorityMedium.setAttribute("name", "priority");
-  priorityMedium.setAttribute("id", "Medium");
-  priorityMedium.setAttribute("value", "Medium");
+  priorityMedium.setAttribute("id", "Mid");
+  priorityMedium.setAttribute("value", "Mid");
 
   const priorityMediumLabel = document.createElement("label");
-  priorityMediumLabel.setAttribute("for", "Medium");
-  priorityMediumLabel.textContent = "Medium";
+  priorityMediumLabel.setAttribute("for", "Mid");
+  priorityMediumLabel.textContent = "Mid";
 
   const priorityHigh = document.createElement("input");
   priorityHigh.setAttribute("type", "radio");
@@ -433,16 +475,19 @@ export const newToDoModal = () => {
           const lowPriority = document.createElement("button");
           lowPriority.textContent = "Low";
           lowPriority.classList.add("priority-button");
+          lowPriority.style.backgroundColor = "lime";
           setPriority.appendChild(lowPriority);
 
           const mediumPriority = document.createElement("button");
-          mediumPriority.textContent = "Medium";
+          mediumPriority.textContent = "Mid";
           mediumPriority.classList.add("priority-button");
+          mediumPriority.style.backgroundColor = "yellow";
           setPriority.appendChild(mediumPriority);
 
           const highPriority = document.createElement("button");
           highPriority.textContent = "High";
           highPriority.classList.add("priority-button");
+          highPriority.style.backgroundColor = "red";
           setPriority.appendChild(highPriority);
           mainModalDiv.appendChild(setPriority);
           const priorityButtons = document.querySelectorAll(".priority-button");
@@ -462,6 +507,33 @@ export const newToDoModal = () => {
           });
         });
       });
+    }
+  });
+};
+
+export const createNewList = () => {
+  const mainDiv = document.querySelector(".main");
+  const newListModal = document.createElement("div");
+  newListModal.classList.add("new-list-modal");
+  const newListHeading = document.createElement("h2");
+  newListHeading.textContent = "List name?";
+  newListModal.appendChild(newListHeading);
+  const newListInput = document.createElement("input");
+  newListInput.setAttribute("type", "text");
+  newListInput.classList.add("new-list-input");
+  newListInput.setAttribute("name", "new-list-name");
+  newListModal.appendChild(newListInput);
+  mainDiv.appendChild(newListModal);
+  newListInput.focus();
+
+  newListInput.addEventListener("keypress", (e) => {
+    e.stopPropagation();
+    // e.preventDefault();
+    if (e.key === "Enter") {
+      const newList = createList(newListInput.value);
+      newList.addList();
+      showAllLists();
+      newListModal.remove();
     }
   });
 };

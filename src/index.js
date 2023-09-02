@@ -8,6 +8,7 @@ import {
   setList,
   listGeneration,
   newToDoModal,
+  createNewList,
 } from "./dom-stuff";
 import { removeToDo } from "./removeToDo";
 
@@ -24,10 +25,12 @@ document.querySelector(".toDoButton").addEventListener("click", () => {
   // document.body.appendChild(testButton);
 });
 
-document.querySelector(".new-list").addEventListener("click", () => {
-  const newList = createList(prompt("Name of list?"));
-  newList.addList();
-  showAllLists();
+document.querySelector(".new-list").addEventListener("click", (e) => {
+  e.stopPropagation();
+  e.preventDefault();
+  createNewList();
+  // newList.addList();
+  // showAllLists();
   console.log(listOfLists);
 });
 

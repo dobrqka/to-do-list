@@ -1,6 +1,32 @@
 * {
   margin: 0;
   padding: 0;
+  font-family: "Barlow", sans-serif;
+  font-family: "Dosis", sans-serif;
+  font-family: "Lobster", cursive;
+  font-family: "Montserrat", sans-serif;
+  font-family: "Nunito", sans-serif;
+  font-family: "Roboto", sans-serif;
+}
+
+h1,
+h3 > p {
+  font-family: "Dancing Script", cursive;
+  font-family: "Dosis", sans-serif;
+  font-family: "Lobster", cursive;
+  font-family: "Montserrat", sans-serif;
+  font-family: "Nunito", sans-serif;
+  font-family: "Roboto", sans-serif;
+}
+
+input {
+  outline: 1px solid black;
+  border: 1px solid black;
+}
+
+button:focus-visible {
+  outline-style: solid;
+  outline-color: black;
 }
 
 body {
@@ -36,18 +62,35 @@ body {
 
 .todos input[type="text"] {
   font-size: 1em;
-  background-color: rgb(252, 122, 122);
+  background-color: rgb(255 156 156);
   border: none;
   color: white;
   outline: none;
   position: absolute;
-  left: 1rem;
+  left: 0.5rem;
   grid-row: span 2;
+  outline: none;
+}
+
+.list-div input[type="text"] {
+  font-size: 1em;
+  background-color: rgb(255, 100, 100);
+  border: none;
+  color: white;
+  outline: none;
+  position: absolute;
+  left: 1.2rem;
+  grid-row: span 2;
+  outline: none;
+  justify-self: center;
+  font-weight: 700;
+  width: 50%;
 }
 
 .main-modal input[type="time"] {
   border-radius: 0.5rem;
   margin-bottom: 0.2rem;
+  outline: none;
 }
 
 .name-prop {
@@ -60,16 +103,18 @@ body {
   font-size: 1.3rem;
   align-self: center;
   position: relative;
+  justify-self: center;
+  margin-right: 0.2rem;
+  font-weight: 900;
 }
 
 .priority-prop {
   font-size: 1rem;
   align-self: center;
   justify-self: start;
-  background-color: rgb(255, 74, 74);
+  color: rgb(0, 0, 0);
   padding: 0.1rem 0.25rem 0.1rem;
-  margin-top: 0.25rem;
-  margin-right: 0.25rem;
+  margin: 0.25rem;
   border-radius: 0.5rem;
 }
 /* 
@@ -78,12 +123,13 @@ body {
 } */
 
 .todo-buttons {
-  align-self: center;
+  align-self: end;
   justify-self: end;
   grid-column: span 2;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   position: relative;
+  margin: 0.2rem;
 }
 
 .change-list,
@@ -97,6 +143,10 @@ body {
   color: white;
   background-color: rgb(255, 74, 74);
   z-index: 2;
+}
+
+.notes-button {
+  padding-bottom: 0.1rem;
 }
 
 .change-list:hover,
@@ -118,18 +168,18 @@ body {
 
 .notes-text,
 .notes-edit {
-  width: 7rem;
-  height: 3rem;
+  width: 14rem;
+  height: 6rem;
   font-size: 1rem;
   padding: 0.2rem;
   position: absolute;
   top: 2.2rem;
-  left: 0;
+  right: 2rem;
   background-color: rgb(255, 223, 223);
   color: rgb(39, 39, 39);
   border: 0.01rem solid rgb(97, 97, 97);
   border-radius: 0.5rem;
-  overflow: scroll;
+  overflow: auto;
 }
 
 .list {
@@ -140,13 +190,6 @@ body {
 
 .footer {
   background-color: rgb(255, 74, 74);
-}
-
-.list-options {
-  width: 30vw;
-  height: 30vh;
-  border: 1px solid grey;
-  display: none;
 }
 
 .toDoButton {
@@ -215,7 +258,9 @@ h3 > p {
   width: 3rem;
 }
 
-.main-modal {
+.main-modal,
+.list-options,
+.new-list-modal {
   position: absolute;
   top: 10rem;
   left: 0;
@@ -228,13 +273,31 @@ h3 > p {
   grid-template-columns: 1fr;
   grid-template-rows: 1fr 1fr;
   padding: 1rem;
-  background-color: rgb(255, 223, 223);
+  background-color: rgb(255 156 156);
   color: rgb(39, 39, 39);
   border: 0.01rem solid rgb(97, 97, 97);
   border-radius: 0.5rem;
 }
 
-.main-modal button {
+.new-list-modal h2 {
+  justify-self: center;
+}
+
+.new-list-modal input {
+  align-self: center;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.list-options {
+  display: none;
+  padding: 0;
+  width: calc(40vw + 2rem);
+  height: calc(10vh + 2rem);
+}
+
+.main-modal button,
+.list-options button {
   border: none;
   background-color: rgb(255, 74, 74);
   color: white;
@@ -244,12 +307,28 @@ h3 > p {
   padding: 0.2rem;
 }
 
-.main-modal button:hover {
+.main-modal button:hover,
+.list-options button:hover {
   background-color: rgb(255, 0, 0);
 }
 
-.main-modal button:active {
+.main-modal button:active,
+.list-options button:active {
   background-color: rgb(255, 110, 110);
+}
+
+.list-options button {
+  border-radius: 0;
+}
+
+.list-options button:first-child {
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+}
+
+.list-options button:last-child {
+  border-bottom-left-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
 }
 
 .main-modal textarea {
@@ -296,19 +375,36 @@ h3 > p {
   right: 0.6rem;
   display: grid;
   grid-template-rows: 1fr;
-  gap: 0.2rem;
+  /* gap: 0.2rem; */
   background-color: rgb(255, 223, 223);
   color: rgb(39, 39, 39);
   border: 0.01rem solid rgb(97, 97, 97);
   border-radius: 0.5rem;
-  padding: 0.2rem;
+  /* padding: 0.2rem; */
   z-index: 3;
 }
 
 .change-priority button {
   border: none;
-  border-radius: 1rem;
+  /* border-radius: 1rem; */
   background-color: white;
+  padding: 0.5rem;
+}
+
+.change-priority button:nth-child(1) {
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+  background-color: lime;
+}
+
+.change-priority button:nth-child(2) {
+  background-color: yellow;
+}
+
+.change-priority button:nth-child(3) {
+  border-bottom-left-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+  background-color: rgb(255 0 0);
 }
 
 .set-priority {
@@ -324,24 +420,29 @@ h3 > p {
   color: white;
   padding: 0.25rem;
   border-radius: 0.5rem;
+  font-weight: 900;
 }
 
 .change-date {
   position: absolute;
-  top: 2rem;
+  top: 2.5rem;
   right: 3rem;
   display: grid;
   z-index: 3;
-  background-color: rgb(255, 223, 223);
+  background-color: rgb(255 161 161);
   border: 0.01rem solid rgb(97, 97, 97);
   border-radius: 0.5rem;
   width: 7rem;
+  outline: none;
 }
 
 .change-date input {
   justify-self: center;
-  background-color: rgb(255, 223, 223);
+  background-color: rgb(255 161 161);
   border: none;
+  outline: none;
+  color: white;
+  font-weight: 900;
 }
 
 .change-date button {
@@ -354,4 +455,66 @@ h3 > p {
   border: none;
   justify-self: stretch;
   margin-top: 0.2rem;
+  font-weight: 900;
 }
+
+.clock-icon {
+  width: 4rem;
+  height: 4rem;
+}
+
+.all-lists {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  grid-template-rows: 1fr;
+  background-color: rgb(255, 166, 166);
+  position: relative;
+}
+
+.all-lists h2 {
+  position: absolute;
+  left: 0.5rem;
+}
+
+.all-lists button {
+  border: none;
+  background-color: rgb(255, 100, 100);
+  color: white;
+  font-size: 1rem;
+  font-weight: 900;
+  margin: 0 0.2rem;
+}
+
+.all-lists button:hover {
+  background-color: rgb(255, 0, 0);
+}
+
+.all-lists button:active {
+  background-color: rgb(255, 110, 110);
+}
+
+.list-div {
+  background-color: rgb(255, 100, 100);
+  margin: 0 0.2rem;
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  font-size: 1rem;
+  position: relative;
+}
+
+.list-name {
+  justify-self: start;
+  padding-left: 1rem;
+  grid-row: span 2;
+}
+
+.delete-list {
+}
+
+.list-div .edit-list {
+  font-size: 0.8rem;
+}
+
+/* pimp up list selection buttons */
