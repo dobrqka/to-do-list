@@ -93,6 +93,7 @@ body {
   border-radius: 0.5rem;
   margin-bottom: 0.2rem;
   outline: none;
+  font-size: 1.5rem;
 }
 
 .name-prop {
@@ -105,7 +106,7 @@ body {
   font-size: 1.3rem;
   align-self: center;
   position: relative;
-  justify-self: center;
+  justify-self: end;
   margin-right: 0.2rem;
   font-weight: 900;
 }
@@ -122,7 +123,7 @@ body {
 .priority-prop {
   font-size: 1rem;
   align-self: center;
-  justify-self: start;
+  justify-self: end;
   color: rgb(0, 0, 0);
   padding: 0.1rem 0.25rem 0.1rem;
   margin: 0.25rem;
@@ -198,6 +199,7 @@ body {
   font-size: 2rem;
   color: rgb(46, 46, 46);
   margin: 0.5rem;
+  padding: 4rem;
 }
 
 .footer {
@@ -206,7 +208,7 @@ body {
 
 .toDoButton {
   position: absolute;
-  bottom: 5rem;
+  bottom: 3rem;
   right: 5rem;
   width: 3rem;
   height: 3rem;
@@ -228,7 +230,7 @@ body {
 
 .new-list {
   position: absolute;
-  bottom: 5rem;
+  bottom: 3rem;
   right: 1.8rem;
   width: 3rem;
   height: 3rem;
@@ -279,12 +281,12 @@ h3 > p {
   right: 0;
   margin-left: auto;
   margin-right: auto;
-  width: 40vw;
-  height: 10vh;
+  width: 30vw;
+  height: 15vh;
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 1fr 1fr;
-  padding: 1rem;
+  padding: 1rem 2.5rem;
   background-color: rgb(255 156 156);
   color: rgb(39, 39, 39);
   border: 0.01rem solid rgb(97, 97, 97);
@@ -293,11 +295,12 @@ h3 > p {
 
 .new-list-modal h2 {
   justify-self: center;
+  font-size: 2rem;
 }
 
 .new-list-modal input {
   align-self: center;
-  font-size: 1rem;
+  font-size: 1.5rem;
   font-weight: 700;
   border-radius: 0.5rem;
   padding-left: 0.2rem;
@@ -306,8 +309,8 @@ h3 > p {
 .list-options {
   display: none;
   padding: 0;
-  width: calc(40vw + 2rem);
-  height: calc(10vh + 2rem);
+  /* width: calc(40vw + 2rem);
+  height: calc(10vh + 2rem); */
   grid-template-rows: 2fr 1fr 1fr;
 }
 
@@ -315,6 +318,7 @@ h3 > p {
   color: white;
   justify-self: center;
   align-self: center;
+  font-size: 2rem;
 }
 
 .main-modal button,
@@ -323,7 +327,7 @@ h3 > p {
   background-color: rgb(255, 74, 74);
   color: white;
   font-weight: 500;
-  font-size: 1rem;
+  font-size: 1.5rem;
   border-radius: 0.5rem;
   padding: 0.2rem;
 }
@@ -365,10 +369,11 @@ h3 > p {
   justify-self: center;
   font-weight: 500;
   color: rgb(37, 37, 37);
+  font-size: 2rem;
 }
 
 .name-input {
-  font-size: 1rem;
+  font-size: 1.5rem;
   align-self: center;
   border-radius: 0.2rem;
   background-color: white;
@@ -377,7 +382,7 @@ h3 > p {
 
 .notes-area {
   margin-bottom: 0.3rem;
-  font-size: 0.7rem;
+  font-size: 1rem;
 }
 
 .radios {
@@ -392,8 +397,8 @@ h3 > p {
 
 .change-priority {
   position: absolute;
-  top: 2rem;
-  right: 0.6rem;
+  top: 1.7rem;
+  /* right: 0.6rem; */
   display: grid;
   grid-template-rows: 1fr;
   background-color: rgb(255, 223, 223);
@@ -476,8 +481,8 @@ h3 > p {
 
 .change-date {
   position: absolute;
-  top: 2.5rem;
-  right: 3rem;
+  top: 2rem;
+  right: 8vw;
   display: grid;
   z-index: 3;
   background-color: rgb(255 161 161);
