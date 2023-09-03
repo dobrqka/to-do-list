@@ -4,7 +4,7 @@ import { removeToDo } from "./removeToDo";
 import { todoForm } from "./addTodo";
 import Icon from "./list.png";
 import Chickin from "./chickin.png";
-import ClockIconBro from "./clock.png";
+import kebab from "./kebab.png";
 
 export const domGeneration = () => {
   const mainDiv = document.querySelector(".main");
@@ -32,6 +32,14 @@ export const domGeneration = () => {
   chickinIcon.src = Chickin;
   const gitHub = document.querySelector(".github");
   gitHub.appendChild(chickinIcon);
+
+  chickinIcon.addEventListener("mouseover", () => {
+    chickinIcon.style.transform = "rotate(45deg)";
+  });
+
+  chickinIcon.addEventListener("mouseout", () => {
+    chickinIcon.removeAttribute("style", "transform");
+  });
 };
 
 export const showList = (aList) => {
@@ -63,27 +71,31 @@ export const showList = (aList) => {
     dueDateDiv.addEventListener("click", (e) => {
       e.preventDefault();
       e.stopImmediatePropagation();
-      const dueDatePrompt = document.createElement("div");
-      dueDatePrompt.classList.add("change-date");
-      const dueDateInput = document.createElement("input");
-      dueDateInput.setAttribute("type", "time");
-      dueDateInput.value = "09:00";
-      dueDatePrompt.appendChild(dueDateInput);
-      dueDateInput.focus();
-      const dueDateSelect = document.createElement("button");
-      dueDateSelect.textContent = "Select";
-      dueDatePrompt.appendChild(dueDateSelect);
-      dueDateDiv.parentElement.appendChild(dueDatePrompt);
+      if (document.querySelector(".change-date")) {
+        document.querySelector(".change-date").remove();
+      } else {
+        const dueDatePrompt = document.createElement("div");
+        dueDatePrompt.classList.add("change-date");
+        const dueDateInput = document.createElement("input");
+        dueDateInput.setAttribute("type", "time");
+        dueDateInput.value = "09:00";
+        dueDatePrompt.appendChild(dueDateInput);
+        const dueDateSelect = document.createElement("button");
+        dueDateSelect.textContent = "Select";
+        dueDatePrompt.appendChild(dueDateSelect);
+        dueDateDiv.parentElement.appendChild(dueDatePrompt);
+        dueDateInput.focus();
 
-      dueDateSelect.addEventListener("click", (e) => {
-        e.preventDefault();
-        e.stopImmediatePropagation();
-        console.log(e.target);
-        item.dueDate = dueDateInput.value; /////////// 'dueDate' for new Todo
-        dueDateDiv.textContent = item.dueDate + "h";
-        console.log(item.dueDate);
-        dueDatePrompt.remove();
-      });
+        dueDateSelect.addEventListener("click", (e) => {
+          e.preventDefault();
+          e.stopImmediatePropagation();
+          console.log(e.target);
+          item.dueDate = dueDateInput.value; /////////// 'dueDate' for new Todo
+          dueDateDiv.textContent = item.dueDate + "h";
+          console.log(item.dueDate);
+          dueDatePrompt.remove();
+        });
+      }
     });
     newDom.appendChild(dueDateDiv);
 
@@ -97,48 +109,64 @@ export const showList = (aList) => {
     }
     priorityDiv.textContent = "Priority: " + item.priority;
     priorityDiv.classList.add("priority-prop");
+    priorityDiv.addEventListener("mouseover", () => {
+      priorityDiv.removeAttribute("style", "background-color");
+    });
+    priorityDiv.addEventListener("mouseout", () => {
+      if (item.priority == "Low") {
+        priorityDiv.style.backgroundColor = "lime";
+      } else if (item.priority == "Mid") {
+        priorityDiv.style.backgroundColor = "yellow";
+      } else if (item.priority == "High") {
+        priorityDiv.style.backgroundColor = "red";
+      }
+    });
     priorityDiv.addEventListener("click", (e) => {
       e.stopPropagation();
-      const changePriority = document.createElement("div");
-      changePriority.classList.add("change-priority");
+      if (document.querySelector(".change-priority")) {
+        document.querySelector(".change-priority").remove();
+      } else {
+        const changePriority = document.createElement("div");
+        changePriority.classList.add("change-priority");
 
-      const lowPriority = document.createElement("button");
-      lowPriority.textContent = "Low";
-      changePriority.appendChild(lowPriority);
+        const lowPriority = document.createElement("button");
+        lowPriority.textContent = "Low";
+        changePriority.appendChild(lowPriority);
 
-      const mediumPriority = document.createElement("button");
-      mediumPriority.textContent = "Mid";
-      changePriority.appendChild(mediumPriority);
+        const mediumPriority = document.createElement("button");
+        mediumPriority.textContent = "Mid";
+        changePriority.appendChild(mediumPriority);
 
-      const highPriority = document.createElement("button");
-      highPriority.textContent = "High";
-      changePriority.appendChild(highPriority);
+        const highPriority = document.createElement("button");
+        highPriority.textContent = "High";
+        changePriority.appendChild(highPriority);
 
-      priorityDiv.appendChild(changePriority);
+        priorityDiv.appendChild(changePriority);
 
-      lowPriority.addEventListener("click", (e) => {
-        e.stopPropagation();
-        item.priority = "Low";
-        priorityDiv.textContent = "Priority: " + item.priority;
-        priorityDiv.style.backgroundColor = "lime";
-        changePriority.remove();
-      });
+        lowPriority.addEventListener("click", (e) => {
+          e.stopPropagation();
+          item.priority = "Low";
+          priorityDiv.textContent = "Priority: " + item.priority;
+          priorityDiv.style.backgroundColor = "lime";
+          changePriority.remove();
+        });
 
-      mediumPriority.addEventListener("click", (e) => {
-        e.stopPropagation();
-        item.priority = "Mid";
-        priorityDiv.textContent = "Priority: " + item.priority;
-        priorityDiv.style.backgroundColor = "yellow";
-        changePriority.remove();
-      });
+        mediumPriority.addEventListener("click", (e) => {
+          e.stopPropagation();
+          item.priority = "Mid";
+          priorityDiv.textContent = "Priority: " + item.priority;
+          priorityDiv.style.backgroundColor = "yellow";
+          changePriority.remove();
+        });
 
-      highPriority.addEventListener("click", (e) => {
-        e.stopPropagation();
-        item.priority = "High";
-        priorityDiv.textContent = "Priority: " + item.priority;
-        priorityDiv.style.backgroundColor = "red";
-        changePriority.remove();
-      });
+        highPriority.addEventListener("click", (e) => {
+          e.stopPropagation();
+          item.priority = "High";
+          priorityDiv.textContent = "Priority: " + item.priority;
+          priorityDiv.style.backgroundColor = "red";
+          changePriority.remove();
+        });
+      }
     });
     newDom.appendChild(priorityDiv);
 
@@ -196,6 +224,7 @@ export const showList = (aList) => {
         listGeneration(listOfLists);
         const listOptionsDiv = document.querySelector(".list-options");
         const listButtons = document.querySelectorAll(".list-options button");
+        const listSelectButtons = document.querySelectorAll(".list-name");
         listButtons.forEach((button) => {
           button.addEventListener("click", (e) => {
             e.stopPropagation();
@@ -206,6 +235,13 @@ export const showList = (aList) => {
                 list.items[list.items.length] = item;
                 console.log(item.list);
                 listOptionsDiv.parentElement.removeChild(listOptionsDiv);
+                listSelectButtons.forEach((listButton) => {
+                  if (list.name == listButton.textContent) {
+                    showActiveList(listButton);
+                    showList(item.list.items);
+                    removeToDo(item.list.items);
+                  }
+                });
               }
             });
           });
@@ -242,55 +278,125 @@ export const showAllLists = () => {
     listButton.textContent = list.name;
     const deleteList = document.createElement("button");
     deleteList.classList.add("delete-list");
-    deleteList.textContent = "x";
+    deleteList.textContent = "Delete";
     const renameList = document.createElement("button");
     renameList.classList.add("edit-list");
-    renameList.textContent = "Edit";
+    renameList.textContent = "Rename";
+
+    listButton.addEventListener("mouseover", () => {
+      if (listButton.style.backgroundColor === "red") {
+        return;
+      }
+      listDiv.style.backgroundColor = "rgb(255 73 73)";
+      listButton.style.backgroundColor = "rgb(255 73 73)";
+      listKebab.style.backgroundColor = "rgb(255 73 73)";
+    });
+
+    listButton.addEventListener("mouseout", () => {
+      if (listButton.style.backgroundColor === "red") {
+        return;
+      }
+      listDiv.removeAttribute("style", "backgroundColor");
+      listButton.removeAttribute("style", "backgroundColor");
+      listKebab.removeAttribute("style", "backgroundColor");
+    });
 
     listButton.addEventListener("click", () => {
+      const allTheButtons = document.querySelectorAll(".list-name");
+      allTheButtons.forEach((button) => {
+        if (button.hasAttribute("style")) {
+          button.removeAttribute("style", "background-color");
+          button.parentElement.removeAttribute("style", "background-color");
+          button.nextSibling.removeAttribute("style", "background-color");
+        }
+      });
+      listDiv.style.backgroundColor = "red";
+      listButton.style.backgroundColor = "red";
+      listKebab.style.backgroundColor = "red";
       showList(list.items);
       removeToDo(list.items);
     });
 
-    deleteList.addEventListener("click", () => {
-      while (list.items.length > 0) {
-        list.items.splice(0, 1);
+    const listKebab = document.createElement("button");
+    listKebab.classList.add("kebab-list");
+    const listKebabImage = document.createElement("img");
+    listKebabImage.src = kebab;
+    listKebabImage.classList.add("kebab-icon");
+    listKebab.appendChild(listKebabImage);
+
+    listKebab.addEventListener("click", (e) => {
+      e.stopPropagation();
+      if (document.querySelector(".kebab-modal")) {
+        document.querySelector(".kebab-modal").remove();
+      } else {
+        const kebabModal = document.createElement("div");
+        kebabModal.classList.add("kebab-modal");
+        kebabModal.appendChild(deleteList);
+        kebabModal.appendChild(renameList);
+        listKebab.appendChild(kebabModal);
+
+        deleteList.addEventListener("click", () => {
+          if (listOfLists.length === 1) {
+            alert("You must always have at least 1 list!");
+            return;
+          }
+          while (list.items.length > 0) {
+            list.items.splice(0, 1);
+          }
+          showList(list.items);
+          if (listOfLists.indexOf(list) === 0) {
+            showList(listOfLists[listOfLists.indexOf(list) + 1].items);
+            listOfLists.splice(listOfLists.indexOf(list), 1);
+            showActiveList(listDiv.nextSibling.children[0]);
+          } else {
+            showList(listOfLists[listOfLists.indexOf(list) - 1].items);
+            listOfLists.splice(listOfLists.indexOf(list), 1);
+            showActiveList(listDiv.previousSibling.children[0]);
+          }
+          listDiv.remove();
+          kebabModal.remove();
+          console.log(listOfLists);
+        });
+
+        renameList.addEventListener("click", () => {
+          if (document.querySelector(".edit-prop")) {
+            document.querySelector(".edit-prop").remove();
+          }
+          // kebabModal.style.display = "none";
+          listButton.style.visibility = "hidden";
+
+          const editProp = document.createElement("input");
+          editProp.classList.add("edit-prop");
+          editProp.setAttribute("type", "text");
+          editProp.value = listButton.textContent;
+          listButton.parentElement.insertBefore(
+            editProp,
+            listButton.nextSibling
+          );
+          editProp.style.alignSelf = "center";
+          // editProp.style.display = "block";
+          editProp.focus();
+          editProp.addEventListener("keypress", (e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+              e.stopPropagation();
+              listButton.textContent = editProp.value;
+              editProp.remove();
+              listButton.style.visibility = "visible";
+              list.name = listButton.textContent;
+              // listButton.textContent = list.name;
+              renameList.parentElement.remove();
+            }
+          });
+          // listButton.textContent = list.name;
+          // console.log(listOfLists);
+        });
       }
-      showList(list.items);
-      listOfLists.splice(listOfLists.indexOf(list), 1);
-      allListDivs.removeChild(listDiv);
-      console.log(listOfLists);
-    });
-
-    renameList.addEventListener("click", () => {
-      listButton.style.visibility = "hidden";
-
-      const editProp = document.createElement("input");
-      editProp.setAttribute("type", "text");
-      editProp.value = listButton.textContent;
-      listButton.parentElement.insertBefore(editProp, listButton.nextSibling);
-      editProp.style.alignSelf = "center";
-      // editProp.style.display = "block";
-      editProp.focus();
-      editProp.addEventListener("keypress", (e) => {
-        if (e.key === "Enter") {
-          e.preventDefault();
-          listButton.textContent = editProp.value;
-          listButton.parentElement.removeChild(editProp);
-          listButton.style.visibility = "visible";
-          list.name = listButton.textContent;
-          console.log(list);
-        }
-      });
-      listButton.textContent = list.name;
-      console.log(listOfLists);
     });
 
     listDiv.appendChild(listButton);
-    listDiv.appendChild(deleteList);
-    listDiv.appendChild(renameList);
+    listDiv.appendChild(listKebab);
     listDiv.style.display = "grid";
-
     allListDivs.appendChild(listDiv);
   });
 };
@@ -300,6 +406,9 @@ export const listGeneration = (listOfLists) => {
   const mainDiv = document.querySelector(".main");
   listOptionsDiv.classList.add("list-options");
   listOptionsDiv.style.display = "grid";
+  const listOptionsHeading = document.createElement("h2");
+  listOptionsHeading.textContent = "Choose a list:";
+  listOptionsDiv.appendChild(listOptionsHeading);
   mainDiv.appendChild(listOptionsDiv);
 
   listOfLists.forEach((list) => {
@@ -355,6 +464,12 @@ export const setList = (listOfLists, newItem) => {
             showList(list.items);
             removeToDo(list.items);
             console.log(list.items);
+            const listSelectButtons = document.querySelectorAll(".list-name");
+            listSelectButtons.forEach((listButton) => {
+              if (list.name == listButton.textContent) {
+                showActiveList(listButton);
+              }
+            });
           }
         });
         // listOptionsDiv.style.display = "none";
@@ -475,19 +590,19 @@ export const newToDoModal = () => {
           const lowPriority = document.createElement("button");
           lowPriority.textContent = "Low";
           lowPriority.classList.add("priority-button");
-          lowPriority.style.backgroundColor = "lime";
+          // lowPriority.style.backgroundColor = "lime";
           setPriority.appendChild(lowPriority);
 
           const mediumPriority = document.createElement("button");
           mediumPriority.textContent = "Mid";
           mediumPriority.classList.add("priority-button");
-          mediumPriority.style.backgroundColor = "yellow";
+          // mediumPriority.style.backgroundColor = "yellow";
           setPriority.appendChild(mediumPriority);
 
           const highPriority = document.createElement("button");
           highPriority.textContent = "High";
           highPriority.classList.add("priority-button");
-          highPriority.style.backgroundColor = "red";
+          // highPriority.style.backgroundColor = "red";
           setPriority.appendChild(highPriority);
           mainModalDiv.appendChild(setPriority);
           const priorityButtons = document.querySelectorAll(".priority-button");
@@ -530,10 +645,39 @@ export const createNewList = () => {
     e.stopPropagation();
     // e.preventDefault();
     if (e.key === "Enter") {
-      const newList = createList(newListInput.value);
+      const newListName = newListInput.value;
+      const newList = createList(newListName);
       newList.addList();
       showAllLists();
       newListModal.remove();
+      const listSelectButtons = document.querySelectorAll(".list-name");
+      listSelectButtons.forEach((listButton) => {
+        if (newList.name == listButton.textContent) {
+          showActiveList(listButton);
+        }
+      });
+      showList(listOfLists[listOfLists.length - 1].items);
     }
   });
 };
+
+export const showActiveList = (thisListButton) => {
+  const allTheButtons = document.querySelectorAll(".list-name");
+  allTheButtons.forEach((button) => {
+    if (button.hasAttribute("style")) {
+      button.removeAttribute("style", "background-color");
+      button.parentElement.removeAttribute("style", "background-color");
+      button.nextSibling.removeAttribute("style", "background-color");
+    }
+  });
+  thisListButton.parentElement.style.backgroundColor = "red";
+  thisListButton.style.backgroundColor = "red";
+  thisListButton.nextSibling.style.backgroundColor = "red";
+};
+
+// const listSelectButtons = document.querySelectorAll(".list-name");
+// listSelectButtons.forEach((listButton) => {
+//   if (list.name == listButton.textContent) {
+//     showActiveList(listButton);
+//   }
+// });

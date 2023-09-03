@@ -7,6 +7,7 @@
   font-family: "Montserrat", sans-serif;
   font-family: "Nunito", sans-serif;
   font-family: "Roboto", sans-serif;
+  font-weight: 500;
 }
 
 h1,
@@ -32,7 +33,7 @@ button:focus-visible {
 body {
   background-color: rgb(255, 74, 74);
   display: grid;
-  grid-template-rows: 8vh 87vh 5vh;
+  grid-template-rows: 8vh 85vh 3rem;
 }
 
 .header {
@@ -47,6 +48,7 @@ body {
 .main {
   align-self: stretch;
   background-color: white;
+  position: relative;
 }
 
 .todos {
@@ -108,6 +110,15 @@ body {
   font-weight: 900;
 }
 
+.date-prop:hover,
+.name-prop:hover {
+  background-color: rgb(255, 169, 169);
+}
+
+.notes-text:hover {
+  background-color: rgb(255, 223, 223);
+}
+
 .priority-prop {
   font-size: 1rem;
   align-self: center;
@@ -116,6 +127,10 @@ body {
   padding: 0.1rem 0.25rem 0.1rem;
   margin: 0.25rem;
   border-radius: 0.5rem;
+}
+
+.priority-prop:hover {
+  background-color: rgb(250, 180, 180);
 }
 /* 
 .notes-div {
@@ -175,11 +190,12 @@ body {
   position: absolute;
   top: 2.2rem;
   right: 2rem;
-  background-color: rgb(255, 223, 223);
+  background-color: rgb(255, 155, 155);
   color: rgb(39, 39, 39);
   border: 0.01rem solid rgb(97, 97, 97);
   border-radius: 0.5rem;
   overflow: auto;
+  z-index: 3;
 }
 
 .list {
@@ -238,24 +254,24 @@ body {
 }
 
 h3 {
-  display: grid;
-  grid-template-columns: 31fr 1fr;
+  height: 3rem;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 h3 > p {
-  align-self: center;
-  justify-self: end;
   font-size: 1rem;
   font-weight: 500;
 }
 
 .github {
-  justify-self: start;
-  align-self: end;
 }
 
 .github > img {
   width: 3rem;
+  margin-bottom: 0;
 }
 
 .main-modal,
@@ -287,6 +303,8 @@ h3 > p {
   align-self: center;
   font-size: 1rem;
   font-weight: 700;
+  border-radius: 0.5rem;
+  padding-left: 0.2rem;
 }
 
 .list-options {
@@ -294,6 +312,13 @@ h3 > p {
   padding: 0;
   width: calc(40vw + 2rem);
   height: calc(10vh + 2rem);
+  grid-template-rows: 2fr 1fr 1fr;
+}
+
+.list-options h2 {
+  color: white;
+  justify-self: center;
+  align-self: center;
 }
 
 .main-modal button,
@@ -375,36 +400,66 @@ h3 > p {
   right: 0.6rem;
   display: grid;
   grid-template-rows: 1fr;
-  /* gap: 0.2rem; */
   background-color: rgb(255, 223, 223);
   color: rgb(39, 39, 39);
   border: 0.01rem solid rgb(97, 97, 97);
   border-radius: 0.5rem;
-  /* padding: 0.2rem; */
   z-index: 3;
 }
 
 .change-priority button {
   border: none;
-  /* border-radius: 1rem; */
   background-color: white;
   padding: 0.5rem;
 }
 
-.change-priority button:nth-child(1) {
+.change-priority button:nth-child(1),
+.set-priority .priority-button:nth-child(1) {
   border-top-left-radius: 0.5rem;
   border-top-right-radius: 0.5rem;
   background-color: lime;
 }
 
-.change-priority button:nth-child(2) {
+.change-priority button:nth-child(1):hover,
+.set-priority .priority-button:nth-child(1):hover {
+  background-color: rgb(3, 190, 3);
+}
+
+.change-priority button:nth-child(1):active,
+.set-priority .priority-button:nth-child(1):active {
+  background-color: rgb(37, 255, 37);
+}
+
+.change-priority button:nth-child(2),
+.set-priority .priority-button:nth-child(2) {
   background-color: yellow;
 }
 
-.change-priority button:nth-child(3) {
+.change-priority button:nth-child(2):hover,
+.set-priority .priority-button:nth-child(2):hover {
+  background-color: rgb(194, 194, 0);
+}
+
+.change-priority button:nth-child(2):active,
+.set-priority .priority-button:nth-child(2):active {
+  background-color: rgb(255, 255, 48);
+}
+
+.change-priority button:nth-child(3),
+.set-priority .priority-button:nth-child(3) {
   border-bottom-left-radius: 0.5rem;
   border-bottom-right-radius: 0.5rem;
   background-color: rgb(255 0 0);
+}
+
+.change-priority button:nth-child(3):hover,
+.set-priority .priority-button:nth-child(3):hover {
+  background-color: rgb(196, 0, 0);
+}
+
+.change-priority button:nth-child(3):active,
+.set-priority .priority-button:nth-child(3):active {
+  background-color: rgb(255, 29, 29);
 }
 
 .set-priority {
@@ -486,35 +541,76 @@ h3 > p {
   margin: 0 0.2rem;
 }
 
-.all-lists button:hover {
-  background-color: rgb(255, 0, 0);
-}
-
-.all-lists button:active {
-  background-color: rgb(255, 110, 110);
-}
-
 .list-div {
   background-color: rgb(255, 100, 100);
-  margin: 0 0.2rem;
+  margin: 0.5rem 0.2rem 0 0.2rem;
+  padding: 0.5rem;
   display: grid;
   grid-template-columns: 3fr 1fr;
-  grid-template-rows: 1fr 1fr;
   font-size: 1rem;
   position: relative;
+  border-radius: 0.2rem;
 }
 
 .list-name {
-  justify-self: start;
+  justify-self: stretch;
   padding-left: 1rem;
-  grid-row: span 2;
-}
-
-.delete-list {
 }
 
 .list-div .edit-list {
   font-size: 0.8rem;
 }
 
-/* pimp up list selection buttons */
+.kebab-list {
+  position: relative;
+  border-radius: 50%;
+  align-self: end;
+  justify-self: end;
+}
+
+.kebab-list:hover {
+  background-color: red;
+}
+
+.kebab-icon {
+  width: 1rem;
+  justify-self: center;
+  align-self: center;
+}
+
+.kebab-modal {
+  position: absolute;
+  top: 1.2rem;
+  background-color: rgb(255, 223, 223);
+  color: rgb(39, 39, 39);
+  border: 0.01rem solid rgb(97, 97, 97);
+  border-radius: 0.5rem;
+  /* padding: 0.2rem; */
+  z-index: 3;
+  display: grid;
+  outline: none;
+}
+
+.kebab-modal .delete-list,
+.kebab-modal .edit-list {
+  background-color: rgb(255, 74, 74);
+  justify-self: stretch;
+  font-size: 1rem;
+  padding: 0.2rem;
+  margin: 0;
+  outline: none;
+}
+
+.kebab-modal .delete-list {
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+}
+
+.kebab-modal .edit-list {
+  border-bottom-left-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+}
+
+.current {
+  background-color: red;
+}
