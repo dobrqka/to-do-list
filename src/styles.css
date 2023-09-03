@@ -132,10 +132,6 @@ body {
 .priority-prop:hover {
   background-color: rgb(250, 180, 180);
 }
-/* 
-.notes-div {
-  position: relative;
-} */
 
 .todo-buttons {
   align-self: end;

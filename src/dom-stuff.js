@@ -14,7 +14,6 @@ export const domGeneration = () => {
   mainDiv.appendChild(addTodo);
 
   const newListButton = document.createElement("button");
-  // newListButton.textContent = "New List";
   const listIcon = new Image();
   listIcon.src = Icon;
   newListButton.classList.add("new-list");
@@ -24,7 +23,6 @@ export const domGeneration = () => {
   mainDiv.appendChild(allListDivs);
 
   const toDoList = document.createElement("div");
-  // toDoList.textContent = "Todos: ";
   toDoList.classList.add("list");
   mainDiv.appendChild(toDoList);
 
@@ -47,7 +45,7 @@ export const showList = (aList) => {
   while (toDoList.firstChild) {
     toDoList.removeChild(toDoList.firstChild);
   }
-  toDoList.textContent = "Todos: ";
+  toDoList.textContent = "To-dos: ";
   aList.forEach((item) => {
     const newDom = document.createElement("div");
     newDom.classList.add("todos");
@@ -61,10 +59,6 @@ export const showList = (aList) => {
     newDom.appendChild(nameDiv);
 
     const dueDateDiv = document.createElement("div");
-    // const clockIcon = document.createElement("img");
-    // clockIcon.classList.add("clock-icon");
-    // clockIcon.src = ClockIconBro;
-    // newDom.appendChild(clockIcon);
     dueDateDiv.textContent = item.dueDate + "h";
     dueDateDiv.classList.add("date-prop");
 
@@ -362,7 +356,6 @@ export const showAllLists = () => {
           if (document.querySelector(".edit-prop")) {
             document.querySelector(".edit-prop").remove();
           }
-          // kebabModal.style.display = "none";
           listButton.style.visibility = "hidden";
 
           const editProp = document.createElement("input");
@@ -374,7 +367,6 @@ export const showAllLists = () => {
             listButton.nextSibling
           );
           editProp.style.alignSelf = "center";
-          // editProp.style.display = "block";
           editProp.focus();
           editProp.addEventListener("keypress", (e) => {
             if (e.key === "Enter") {
@@ -384,12 +376,9 @@ export const showAllLists = () => {
               editProp.remove();
               listButton.style.visibility = "visible";
               list.name = listButton.textContent;
-              // listButton.textContent = list.name;
               renameList.parentElement.remove();
             }
           });
-          // listButton.textContent = list.name;
-          // console.log(listOfLists);
         });
       }
     });
@@ -417,32 +406,11 @@ export const listGeneration = (listOfLists) => {
 
     listOptionsDiv.appendChild(listButton);
   });
-
-  // listOfLists.forEach((list) => {
-  //   const listRadio = document.createElement("input");
-  //   listRadio.setAttribute("type", "radio");
-  //   listRadio.setAttribute("id", list.name);
-  //   listRadio.value = list.name;
-  //   listRadio.setAttribute("name", "list-radio");
-
-  //   const listRadioLabel = document.createElement("label");
-  //   listRadioLabel.setAttribute("for", list.name);
-  //   listRadioLabel.textContent = list.name;
-
-  //   listOptionsDiv.appendChild(listRadioLabel);
-  //   listOptionsDiv.appendChild(listRadio);
-  // });
-
-  // const selectButton = document.createElement("button");
-  // selectButton.classList.add("select-button");
-  // selectButton.textContent = "Select";
-  // listOptionsDiv.appendChild(selectButton);
 };
 
 export const setList = (listOfLists, newItem) => {
   listGeneration(listOfLists);
 
-  // const selectButton = document.querySelector(".select-button");
   const listOptionsDiv = document.querySelector(".list-options");
   const listButtons = document.querySelectorAll(".list-options button");
   if (listOfLists.length == 1) {
@@ -450,7 +418,6 @@ export const setList = (listOfLists, newItem) => {
     newItem.list = listOfLists[0];
     showList(listOfLists[0].items);
     removeToDo(listOfLists[0].items);
-    // listOptionsDiv.style.display = "none";
     listOptionsDiv.parentElement.removeChild(listOptionsDiv);
   } else {
     listButtons.forEach((button) => {
@@ -472,61 +439,12 @@ export const setList = (listOfLists, newItem) => {
             });
           }
         });
-        // listOptionsDiv.style.display = "none";
         listOptionsDiv.parentElement.removeChild(listOptionsDiv);
         console.log(listOfLists);
       });
     });
   }
 };
-
-const priorityModal = () => {
-  const priorityLow = document.createElement("input");
-  priorityLow.setAttribute("type", "radio");
-  priorityLow.setAttribute("name", "priority");
-  priorityLow.setAttribute("id", "Low");
-  priorityLow.setAttribute("value", "Low");
-
-  const priorityLowLabel = document.createElement("label");
-  priorityLowLabel.setAttribute("for", "Low");
-  priorityLowLabel.textContent = "Low";
-
-  const priorityMedium = document.createElement("input");
-  priorityMedium.setAttribute("type", "radio");
-  priorityMedium.setAttribute("name", "priority");
-  priorityMedium.setAttribute("id", "Mid");
-  priorityMedium.setAttribute("value", "Mid");
-
-  const priorityMediumLabel = document.createElement("label");
-  priorityMediumLabel.setAttribute("for", "Mid");
-  priorityMediumLabel.textContent = "Mid";
-
-  const priorityHigh = document.createElement("input");
-  priorityHigh.setAttribute("type", "radio");
-  priorityHigh.setAttribute("name", "priority");
-  priorityHigh.setAttribute("id", "High");
-  priorityHigh.setAttribute("value", "High");
-
-  const priorityHighLabel = document.createElement("label");
-  priorityHighLabel.setAttribute("for", "High");
-  priorityHighLabel.textContent = "High";
-
-  const prioritySelect = document.createElement("button");
-  prioritySelect.classList.add("priority-select");
-  prioritySelect.textContent = "Select";
-
-  const priorityRadios = document.createElement("div");
-  priorityRadios.classList.add("radios");
-
-  priorityRadios.appendChild(priorityLowLabel);
-  priorityRadios.appendChild(priorityLow);
-  priorityRadios.appendChild(priorityMediumLabel);
-  priorityRadios.appendChild(priorityMedium);
-  priorityRadios.appendChild(priorityHighLabel);
-  priorityRadios.appendChild(priorityHigh);
-};
-
-// when they click on the "+" button this modal shows up
 
 export const newToDoModal = () => {
   const mainContainerDiv = document.querySelector(".main");
@@ -590,19 +508,16 @@ export const newToDoModal = () => {
           const lowPriority = document.createElement("button");
           lowPriority.textContent = "Low";
           lowPriority.classList.add("priority-button");
-          // lowPriority.style.backgroundColor = "lime";
           setPriority.appendChild(lowPriority);
 
           const mediumPriority = document.createElement("button");
           mediumPriority.textContent = "Mid";
           mediumPriority.classList.add("priority-button");
-          // mediumPriority.style.backgroundColor = "yellow";
           setPriority.appendChild(mediumPriority);
 
           const highPriority = document.createElement("button");
           highPriority.textContent = "High";
           highPriority.classList.add("priority-button");
-          // highPriority.style.backgroundColor = "red";
           setPriority.appendChild(highPriority);
           mainModalDiv.appendChild(setPriority);
           const priorityButtons = document.querySelectorAll(".priority-button");
@@ -643,7 +558,6 @@ export const createNewList = () => {
 
   newListInput.addEventListener("keypress", (e) => {
     e.stopPropagation();
-    // e.preventDefault();
     if (e.key === "Enter") {
       const newListName = newListInput.value;
       const newList = createList(newListName);
@@ -674,10 +588,3 @@ export const showActiveList = (thisListButton) => {
   thisListButton.style.backgroundColor = "red";
   thisListButton.nextSibling.style.backgroundColor = "red";
 };
-
-// const listSelectButtons = document.querySelectorAll(".list-name");
-// listSelectButtons.forEach((listButton) => {
-//   if (list.name == listButton.textContent) {
-//     showActiveList(listButton);
-//   }
-// });
