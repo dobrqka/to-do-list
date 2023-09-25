@@ -1,3 +1,5 @@
+import { setLocal } from "./dom-stuff";
+
 export const editToDo = (element, toDoObject) => {
   // element.style.display = "none";
   element.style.visibility = "hidden";
@@ -18,6 +20,7 @@ export const editToDo = (element, toDoObject) => {
       element.style.visibility = "visible";
       if (element.classList.contains("name-prop")) {
         toDoObject.name = element.textContent;
+        setLocal();
       } else if (element.classList.contains("date-prop")) {
         toDoObject.dueDate = element.textContent;
       } else if (element.classList.contains("priority-prop")) {

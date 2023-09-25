@@ -6,6 +6,11 @@ import Icon from "./list.png";
 import Chickin from "./chickin.png";
 import kebab from "./kebab.png";
 
+export const setLocal = () => {
+  localStorage.clear();
+  localStorage.setItem("listOfLists", JSON.stringify(listOfLists));
+};
+
 export const domGeneration = () => {
   const mainDiv = document.querySelector(".main");
   const addTodo = document.createElement("button");
@@ -56,6 +61,8 @@ export const showList = (aList) => {
     nameDiv.addEventListener("click", () => {
       editToDo(nameDiv, item);
     });
+    localStorage.clear();
+    localStorage.setItem("listOfLists", JSON.stringify(listOfLists));
     newDom.appendChild(nameDiv);
 
     const dueDateDiv = document.createElement("div");
@@ -88,6 +95,7 @@ export const showList = (aList) => {
           dueDateDiv.textContent = item.dueDate + "h";
           console.log(item.dueDate);
           dueDatePrompt.remove();
+          setLocal();
         });
       }
     });
@@ -143,6 +151,7 @@ export const showList = (aList) => {
           priorityDiv.textContent = "Priority: " + item.priority;
           priorityDiv.style.backgroundColor = "lime";
           changePriority.remove();
+          setLocal();
         });
 
         mediumPriority.addEventListener("click", (e) => {
@@ -151,6 +160,7 @@ export const showList = (aList) => {
           priorityDiv.textContent = "Priority: " + item.priority;
           priorityDiv.style.backgroundColor = "yellow";
           changePriority.remove();
+          setLocal();
         });
 
         highPriority.addEventListener("click", (e) => {
@@ -159,6 +169,7 @@ export const showList = (aList) => {
           priorityDiv.textContent = "Priority: " + item.priority;
           priorityDiv.style.backgroundColor = "red";
           changePriority.remove();
+          setLocal();
         });
       }
     });
@@ -185,6 +196,7 @@ export const showList = (aList) => {
           notesText.style.visibility = "visible";
           item.notes = notesText.textContent;
           notesText.textContent = item.notes;
+          setLocal();
         }
       });
     });
@@ -230,15 +242,24 @@ export const showList = (aList) => {
             e.preventDefault();
             listOfLists.forEach((list) => {
               if (button.textContent == list.name) {
-                item.list = list;
-                list.items[list.items.length] = item;
-                console.log(item.list);
-                listOptionsDiv.parentElement.removeChild(listOptionsDiv);
+                item.list = list.name;
+                list.items.push(item);
+                console.log(list.items);
+                listOptionsDiv.remove();
                 listSelectButtons.forEach((listButton) => {
                   if (list.name == listButton.textContent) {
                     showActiveList(listButton);
-                    showList(item.list.items);
-                    removeToDo(item.list.items);
+                    if (item.list == list.name) {
+                      showList(list.items);
+                      removeToDo(list.items);
+                      localStorage.clear();
+                      localStorage.setItem(
+                        "listOfLists",
+                        JSON.stringify(listOfLists)
+                      );
+                    }
+                    // showList(item.list.items);
+                    // removeToDo(item.list.items);
                   }
                 });
               }
@@ -314,6 +335,8 @@ export const showAllLists = () => {
       listKebab.style.backgroundColor = "red";
       showList(list.items);
       removeToDo(list.items);
+      localStorage.clear();
+      localStorage.setItem("listOfLists", JSON.stringify(listOfLists));
     });
 
     const listKebab = document.createElement("button");
@@ -354,6 +377,8 @@ export const showAllLists = () => {
           }
           listDiv.remove();
           kebabModal.remove();
+          localStorage.clear();
+          localStorage.setItem("listOfLists", JSON.stringify(listOfLists));
           console.log(listOfLists);
         });
 
@@ -381,6 +406,7 @@ export const showAllLists = () => {
               editProp.remove();
               listButton.style.visibility = "visible";
               list.name = listButton.textContent;
+              setLocal();
               renameList.parentElement.remove();
             }
           });
@@ -423,6 +449,8 @@ export const setList = (listOfLists, newItem) => {
     newItem.list = listOfLists[0].name; /// added .name due to JSON error
     showList(listOfLists[0].items);
     removeToDo(listOfLists[0].items);
+    localStorage.clear();
+    localStorage.setItem("listOfLists", JSON.stringify(listOfLists));
     listOptionsDiv.parentElement.removeChild(listOptionsDiv);
   } else {
     listButtons.forEach((button) => {
@@ -435,6 +463,8 @@ export const setList = (listOfLists, newItem) => {
             newItem.list = list.name; /// added .name due to JSON error
             showList(list.items);
             removeToDo(list.items);
+            localStorage.clear();
+            localStorage.setItem("listOfLists", JSON.stringify(listOfLists));
             console.log(list.items);
             const listSelectButtons = document.querySelectorAll(".list-name");
             listSelectButtons.forEach((listButton) => {
@@ -628,6 +658,17 @@ export const showActiveList = (thisListButton) => {
   thisListButton.nextSibling.style.backgroundColor = "red";
 };
 
+const biggestList = () => {
+  let theBiggest = listOfLists[0];
+  listOfLists.forEach((list) => {
+    if (list.items.length > theBiggest.items.length) {
+      theBiggest = list;
+    }
+  });
+  console.log(theBiggest.name);
+  return theBiggest.name;
+};
+
 const parseListOfLists = (async () => {
   if (localStorage.getItem("listOfLists") !== null) {
     const fetchJson = localStorage.getItem("listOfLists");
@@ -636,9 +677,23 @@ const parseListOfLists = (async () => {
     listOfLists.pop();
     parsedArray.forEach((item) => {
       listOfLists.push(item);
-      // domGeneration();
-      showList(listOfLists[0].items);
+      listOfLists.forEach((list) => {
+        const currentList = biggestList();
+        if (list.name == currentList) {
+          showList(list.items);
+          removeToDo(list.items);
+        }
+      });
+      // showList(listOfLists[0].items);
       showAllLists();
+
+      const listButtons = document.querySelectorAll(".list-name");
+      listButtons.forEach((button) => {
+        const currentButton = biggestList();
+        if (button.textContent == currentButton) {
+          showActiveList(button);
+        }
+      });
     });
     // listOfLists = parsedArray.slice();
     console.log(listOfLists);
