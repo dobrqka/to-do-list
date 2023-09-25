@@ -214,7 +214,12 @@ export const showList = (aList) => {
       if (document.querySelector(".list-options")) {
         document.querySelector(".list-options").remove();
       } else {
-        item.list.items.splice(item.list.items.indexOf(item), 1);
+        listOfLists.forEach((list) => {
+          if (list.name == item.list) {
+            list.items.splice(list.items.indexOf(item), 1);
+          }
+        });
+        // item.list.items.splice(item.list.items.indexOf(item), 1);
         listGeneration(listOfLists);
         const listOptionsDiv = document.querySelector(".list-options");
         const listButtons = document.querySelectorAll(".list-options button");
@@ -415,7 +420,7 @@ export const setList = (listOfLists, newItem) => {
   const listButtons = document.querySelectorAll(".list-options button");
   if (listOfLists.length == 1) {
     addItem(newItem, listOfLists[0]);
-    newItem.list = listOfLists[0];
+    newItem.list = listOfLists[0].name; /// added .name due to JSON error
     showList(listOfLists[0].items);
     removeToDo(listOfLists[0].items);
     listOptionsDiv.parentElement.removeChild(listOptionsDiv);
@@ -427,7 +432,7 @@ export const setList = (listOfLists, newItem) => {
         listOfLists.forEach((list) => {
           if (button.textContent == list.name) {
             addItem(newItem, list);
-            newItem.list = list;
+            newItem.list = list.name; /// added .name due to JSON error
             showList(list.items);
             removeToDo(list.items);
             console.log(list.items);
@@ -435,6 +440,11 @@ export const setList = (listOfLists, newItem) => {
             listSelectButtons.forEach((listButton) => {
               if (list.name == listButton.textContent) {
                 showActiveList(listButton);
+                localStorage.clear();
+                localStorage.setItem(
+                  "listOfLists",
+                  JSON.stringify(listOfLists)
+                );
               }
             });
           }
@@ -538,6 +548,11 @@ export const newToDoModal = () => {
                 );
                 setList(listOfLists, newItem);
                 mainModalDiv.style.display = "none";
+                localStorage.clear();
+                localStorage.setItem(
+                  "listOfLists",
+                  JSON.stringify(listOfLists)
+                );
               });
             });
           });
@@ -581,6 +596,8 @@ export const createNewList = () => {
           }
         });
         showList(listOfLists[listOfLists.length - 1].items);
+        localStorage.clear();
+        localStorage.setItem("listOfLists", JSON.stringify(listOfLists));
       }
     }
   });

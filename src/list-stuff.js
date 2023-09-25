@@ -20,5 +20,6 @@ export const createList = (name) => {
   const addList = () => {
     listOfLists[listOfLists.length] = newList(name);
   };
+
   return { name, addList };
 };
