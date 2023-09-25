@@ -579,9 +579,19 @@ export const createNewList = () => {
 
   newListInput.addEventListener("keypress", (e) => {
     e.stopPropagation();
+    let nameIsTaken = false;
+    listOfLists.forEach((list) => {
+      if (newListInput.value == list.name) {
+        nameIsTaken = true;
+        return;
+      }
+    });
     if (e.key === "Enter") {
       if (newListInput.value == "") {
         alert("Please insert a list name.");
+        return;
+      } else if (nameIsTaken) {
+        alert("There's already a list by that name. Please pick another.");
         return;
       } else {
         const newListName = newListInput.value;
@@ -598,6 +608,7 @@ export const createNewList = () => {
         showList(listOfLists[listOfLists.length - 1].items);
         localStorage.clear();
         localStorage.setItem("listOfLists", JSON.stringify(listOfLists));
+        return;
       }
     }
   });
@@ -616,3 +627,22 @@ export const showActiveList = (thisListButton) => {
   thisListButton.style.backgroundColor = "red";
   thisListButton.nextSibling.style.backgroundColor = "red";
 };
+
+const parseListOfLists = (async () => {
+  if (localStorage.getItem("listOfLists") !== null) {
+    const fetchJson = localStorage.getItem("listOfLists");
+    let parsedArray = await JSON.parse(fetchJson);
+    console.log(parsedArray);
+    listOfLists.pop();
+    parsedArray.forEach((item) => {
+      listOfLists.push(item);
+      // domGeneration();
+      showList(listOfLists[0].items);
+      showAllLists();
+    });
+    // listOfLists = parsedArray.slice();
+    console.log(listOfLists);
+  } else {
+    return;
+  }
+})();
